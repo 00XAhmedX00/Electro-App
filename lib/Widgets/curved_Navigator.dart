@@ -41,7 +41,7 @@ class _CurvedNavigatorState extends State<CurvedNavigator> {
         animationCurve: Curves.easeInOut,
         animationDuration: const Duration(milliseconds: 250),
         color: const Color.fromARGB(255, 126, 95, 227),
-        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+        backgroundColor: Colors.transparent,
         buttonBackgroundColor: const Color.fromARGB(255, 60, 30, 182),
         items: items,
         index: _index,
