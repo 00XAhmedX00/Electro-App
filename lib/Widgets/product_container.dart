@@ -7,10 +7,14 @@ Widget productContainer({
   required double rate,
   required double price,
   required double priceAfterDiscount,
+  required BuildContext context
 }) {
+
+  double height = MediaQuery.of(context).size.height;
+  double width = MediaQuery.of(context).size.width;
   return Container(
-    width: 100,
-    height: 200,
+    width: width * 0.35,
+    height: height * 0.27,
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(5),
       color: Colors.black12,
@@ -22,13 +26,13 @@ Widget productContainer({
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Image
-          Image.asset(image),
+          Center(child: Image.asset(image)),
           // Name of the product
           Center(
             child: Text(
               name,
               style: GoogleFonts.voces(
-                fontSize: 14,
+                fontSize: 17,
                 fontWeight: FontWeight.bold,
                 color: Colors.black,
               ),
@@ -43,7 +47,7 @@ Widget productContainer({
               Text(
                 rate.toString(),
                 style: GoogleFonts.voces(
-                  fontSize: 10,
+                  fontSize: 15,
                   fontWeight: FontWeight.bold,
                   color: Colors.black,
                 ),
@@ -51,7 +55,7 @@ Widget productContainer({
               const SizedBox(width: 2),
               Icon(
                 Icons.star,
-                size: 15,
+                size: 19,
                 color: rate > 4 ? Colors.green : Colors.orange,
               ),
             ],
@@ -61,7 +65,7 @@ Widget productContainer({
           Text(
             "EGP $priceAfterDiscount",
             style: GoogleFonts.voces(
-              fontSize: 15,
+              fontSize: 18,
               fontWeight: FontWeight.bold,
               color: Colors.black,
             ),
@@ -70,7 +74,7 @@ Widget productContainer({
           Text(
             "EGP $price",
             style: GoogleFonts.voces(
-              fontSize: 10,
+              fontSize: 16,
               fontWeight: FontWeight.bold,
               color: Colors.black38,
               decoration: TextDecoration.lineThrough,

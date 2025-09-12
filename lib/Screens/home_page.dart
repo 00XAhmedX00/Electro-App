@@ -51,6 +51,10 @@ class HomePage extends StatelessWidget {
         "priceAfterDiscount": 8999.0,
       },
     ];
+
+    double height  = MediaQuery.of(context).size.height;
+    double width  = MediaQuery.of(context).size.width;
+
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.only(top: 50, left: 10, right: 10),
@@ -114,7 +118,7 @@ class HomePage extends StatelessWidget {
             const SizedBox(height: 20),
             // Sliding Show
             SizedBox(
-              height: 350,
+              height: height * 0.48,
               child: PageView(
                 children: [
                   buildBanner("assets/images/ads/ad1.png"),
@@ -182,6 +186,7 @@ class HomePage extends StatelessWidget {
                         rate: product['rate'],
                         price: product['price'],
                         priceAfterDiscount: product['priceAfterDiscount'],
+                        context: context
                       ),
                     );
                   }),
