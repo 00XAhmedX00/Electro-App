@@ -14,7 +14,7 @@ Widget productContainer({
   double width = MediaQuery.of(context).size.width;
   return Container(
     width: width * 0.35,
-    height: height * 0.27,
+    height: height * 0.3,
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(5),
       color: Colors.black12,

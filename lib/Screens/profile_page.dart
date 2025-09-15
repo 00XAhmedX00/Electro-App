@@ -17,7 +17,7 @@ class ProfilePage extends StatelessWidget {
             
             Container(
               width: double.infinity,
-              height: height * 0.3,
+              height: height * 0.4,
               decoration: const BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topRight,
@@ -141,7 +141,7 @@ class ProfilePage extends StatelessWidget {
             ),
 
             Positioned(
-              top: height * 0.55,
+              top: height * 0.65,
               left: width * 0.01,
               right: width * 0.05,
               
