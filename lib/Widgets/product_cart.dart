@@ -17,112 +17,93 @@ class ProductCart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: EdgeInsets.all(screenWidth * 0.02), // 2% padding
           child: Container(
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                //Image
+                // Image
                 Container(
-                  width: 100,
-                  height: 110,
+                  width: screenWidth * 0.25, // 25% of screen width
+                  height: screenHeight * 0.15, // 15% of screen height
                   decoration: BoxDecoration(
                     color: Colors.blueGrey.shade100,
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(screenWidth * 0.02),
                   ),
                   child: Image.asset(product['image'], fit: BoxFit.cover),
                 ),
 
-                // [Product : name , category , price ]
+                SizedBox(width: screenWidth * 0.03), // spacing
+                // Product info
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Product Name
-                      Padding(
-                        padding: const EdgeInsets.only(left: 15.0, top: 4),
-                        child: Text(
-                          product['name'],
-                          style: GoogleFonts.voces(fontSize: 20),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
+                      Text(
+                        product['name'],
+                        style: GoogleFonts.voces(
+                          fontSize: screenWidth * 0.05, // responsive font
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      Text(
+                        product['category'],
+                        style: GoogleFonts.voces(
+                          fontSize: screenWidth * 0.035,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-
-                      // Product Category
-                      Padding(
-                        padding: const EdgeInsets.only(left: 15.0),
-                        child: Text(
-                          product['category'],
-                          style: GoogleFonts.voces(
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-
-                      // Product Price
-                      Padding(
-                        padding: const EdgeInsets.only(left: 15.0, top: 11),
-                        child: Text(
-                          '${product['price'].toString()} EGP',
-                          style: GoogleFonts.voces(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
+                      Text(
+                        '${product['price'].toString()} EGP',
+                        style: GoogleFonts.voces(
+                          fontSize: screenWidth * 0.045,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ],
                   ),
                 ),
 
-                // To push the buttons to the end (create Empty space)
-                Spacer(),
-
-                // [Delete  , Add or Decrease button , Count]
+                // Buttons
                 Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    // Delete Button
                     IconButton(
                       onPressed: onDelete,
                       icon: Icon(
                         Icons.delete_outline,
-                        size: 33,
+                        size: screenWidth * 0.08,
                         color: Color(0xFF9C27B0),
                       ),
                     ),
-
-                    // [ADD , COUNT , DECREASE]
                     Row(
                       children: [
-                        // Add Button
                         IconButton(
                           onPressed: onAdd,
                           icon: Icon(
                             Icons.add_circle_outline,
-                            size: 30,
+                            size: screenWidth * 0.07,
                             color: Color(0xFF9C27B0),
                           ),
                         ),
-
-                        // Count
                         Text(
                           product['count'].toString(),
-                          style: GoogleFonts.voces(fontSize: 20),
+                          style: GoogleFonts.voces(
+                            fontSize: screenWidth * 0.045,
+                          ),
                         ),
-
-                        // Decrease Button
                         IconButton(
                           onPressed: onRemove,
                           icon: Icon(
                             Icons.remove_circle_outline,
-                            size: 30,
+                            size: screenWidth * 0.07,
                             color: Color(0xFF9C27B0),
                           ),
                         ),
@@ -135,10 +116,10 @@ class ProductCart extends StatelessWidget {
           ),
         ),
         Divider(
-          color: Colors.grey, // line color
-          thickness: 1, // line thickness
-          indent: 20, // empty space before line
-          endIndent: 20, // empty space after line
+          color: Colors.grey,
+          thickness: 1,
+          indent: screenWidth * 0.05,
+          endIndent: screenWidth * 0.05,
         ),
       ],
     );
