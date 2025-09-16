@@ -60,6 +60,7 @@ class ProductCart extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
+                      SizedBox(height: screenHeight * 0.0135,),
                       Text(
                         '${product['price'].toString()} EGP',
                         style: GoogleFonts.voces(
