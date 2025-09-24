@@ -1,3 +1,4 @@
+import 'package:electrocart/Screens/registration_page.dart';
 import 'package:flutter/material.dart';
 import 'package:electrocart/Widgets/curved_Navigator.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -9,7 +10,8 @@ void main() async {
   runApp(
     const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: CurvedNavigator(),
+      //home: CurvedNavigator(),
+      home: RegistrationPage(),
     ),
   );
 }
