@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "630812556650",
+    "project_id": "electro-app-fc2db",
+    "storage_bucket": "electro-app-fc2db.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:630812556650:android:6509056a6af022e0f87913",
+        "android_client_info": {
+          "package_name": "com.example.electrocart"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDnsfJdRM8z-gYBftipRyifme-pSxKcVjk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
