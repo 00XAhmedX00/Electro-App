@@ -1,3 +1,4 @@
+import 'package:electrocart/Firebase/auth_services.dart';
 import 'package:electrocart/Widgets/specific_form_field.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -71,21 +72,24 @@ class _RegistrationPageState extends State<RegistrationPage> {
                 "Email",
                 style: GoogleFonts.voces(fontSize: 30, color: Colors.black),
               ),
-              formFields.emailFormField(),
+              formFields.emailFormField(controller: email),
               // Password Input Field
               const SizedBox(height: 20),
               Text(
                 "Password",
                 style: GoogleFonts.voces(fontSize: 30, color: Colors.black),
               ),
-              formFields.passwordFormField(),
+              formFields.passwordFormField(controller: password),
               // Confirm Password Input Field
               const SizedBox(height: 20),
               Text(
                 "Confirm Password",
                 style: GoogleFonts.voces(fontSize: 30, color: Colors.black),
               ),
-              formFields.passwordFormField(),
+              formFields.confirPasswordFormField(
+                controller: confirmPassword,
+                actualPassword: password,
+              ),
               // Submit Button
               const SizedBox(height: 20),
               Center(
@@ -95,9 +99,10 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   ),
                   onPressed: () {
                     if (key.currentState!.validate()) {
-                      print("Sig");
-                    } else {
-                      print("Not Valid");
+                      AuthServices().addUser(
+                        email: email.text,
+                        password: password.text,
+                      );
                     }
                   },
                   child: Text(

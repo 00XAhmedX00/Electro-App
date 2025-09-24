@@ -37,11 +37,11 @@ class SpecificFormField {
     );
   }
 
-  Widget emailFormField() {
+  Widget emailFormField({required TextEditingController controller}) {
     return SizedBox(
       width: double.maxFinite,
       child: TextFormField(
-        controller: TextEditingController(),
+        controller: controller,
         decoration: InputDecoration(
           hintText: "Enter your email",
           hintStyle: GoogleFonts.voces(fontSize: 15, color: Colors.black38),
@@ -70,11 +70,11 @@ class SpecificFormField {
     );
   }
 
-  Widget passwordFormField() {
+  Widget passwordFormField({required TextEditingController controller}) {
     return SizedBox(
       width: double.maxFinite,
       child: TextFormField(
-        controller: TextEditingController(),
+        controller: controller,
         decoration: InputDecoration(
           hintText: "Enter your password",
           hintStyle: GoogleFonts.voces(fontSize: 15, color: Colors.black38),
@@ -91,13 +91,51 @@ class SpecificFormField {
           fillColor: Colors.white54,
         ),
         validator: (value) {
-          final regExp = RegExp(r'^[\.-]');
+          final regExp = RegExp(r'[!@#$%^&*(),.?":{}|<>]');
           if (value!.isEmpty) {
             return "Input required!";
           } else if (value.length < 6) {
             return "Length of password should be at least 6!";
-          } else if (!value.contains(regExp)) {
-            return "Contains";
+          } else if (!regExp.hasMatch(value)) {
+            return "Password should contains special character!";
+          }
+          return null;
+        },
+        obscureText: true,
+      ),
+    );
+  }
+
+  Widget confirPasswordFormField({
+    required TextEditingController controller,
+    required TextEditingController actualPassword,
+  }) {
+    return SizedBox(
+      width: double.maxFinite,
+      child: TextFormField(
+        controller: controller,
+        decoration: InputDecoration(
+          hintText: "Enter your password",
+          hintStyle: GoogleFonts.voces(fontSize: 15, color: Colors.black38),
+          prefixIcon: Icon(Icons.password_outlined),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide(color: Colors.black),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide(color: Colors.green, width: 3),
+          ),
+          filled: true,
+          fillColor: Colors.white54,
+        ),
+        validator: (value) {
+          if (value!.isEmpty) {
+            return "Input required!";
+          } else if (value.length < 6) {
+            return "Length of password should be at least 6!";
+          } else if (controller.text != actualPassword.text) {
+            return "The two passwords not matched!";
           }
           return null;
         },
