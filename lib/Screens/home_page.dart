@@ -1,4 +1,6 @@
+import 'package:electrocart/Screens/product_details.dart';
 import 'package:electrocart/Widgets/build_banner.dart';
+import 'package:electrocart/Widgets/go_to.dart';
 import 'package:electrocart/Widgets/product_container.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -178,15 +180,19 @@ class HomePage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   ...products.map((product) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 3),
-                      child: productContainer(
-                        image: product['image'],
-                        name: product['name'],
-                        rate: product['rate'],
-                        price: product['price'],
-                        priceAfterDiscount: product['priceAfterDiscount'],
-                        context: context
+                    return InkWell(
+                      onTap: () => goTo(context: context , page: ProductDetails(), routed: true),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 3),
+                        child: productContainer(
+                          image: product['image'],
+                          name: product['name'],
+                          rate: product['rate'],
+                          price: product['price'],
+                          priceAfterDiscount: product['priceAfterDiscount'],
+                          context: context,
+                         
+                        ),
                       ),
                     );
                   }),

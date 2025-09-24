@@ -1,3 +1,5 @@
+import 'package:electrocart/Screens/product_details.dart';
+import 'package:electrocart/Widgets/go_to.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -7,12 +9,13 @@ Widget productContainer({
   required double rate,
   required double price,
   required double priceAfterDiscount,
-  required BuildContext context
+  required BuildContext context,
 }) {
 
   double height = MediaQuery.of(context).size.height;
   double width = MediaQuery.of(context).size.width;
   return Container(
+    
     width: width * 0.35,
     height: height * 0.3,
     decoration: BoxDecoration(

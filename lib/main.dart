@@ -10,8 +10,8 @@ void main() async {
   runApp(
     const MaterialApp(
       debugShowCheckedModeBanner: false,
-      //home: CurvedNavigator(),
-      home: RegistrationPage(),
+      home: CurvedNavigator(),
+      // home: RegistrationPage(),
     ),
   );
 }
