@@ -1,18 +1,71 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:electrocart/Screens/login_page.dart';
+import 'package:electrocart/Widgets/curved_Navigator.dart';
+import 'package:electrocart/Widgets/go_to.dart';
+import 'package:electrocart/Widgets/showSnackbar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthServices {
-  void addUser({required String email, required String password}) async {
+  Future<void> addUser({
+    required String firstName,
+    required String lastName,
+    required String email,
+    required String password,
+    required context,
+  }) async {
     try {
       final credential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
+
+      await credential.user!.sendEmailVerification();
+      await FirebaseFirestore.instance
+          .collection("Users")
+          .doc(credential.user!.uid)
+          .set({
+            "FirstName": firstName,
+            "LastName": lastName,
+            "Email": email,
+            "createdAt": Timestamp.now(),
+          });
+      await FirebaseAuth.instance.signOut();
+      if (context.mounted) {
+        goTo(context: context, page: LoginPage());
+      }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
-        print('The password provided is too weak.');
+        showSnackbar(message: "Your password is weak!", context: context);
       } else if (e.code == 'email-already-in-use') {
-        print('The account already exists for that email.');
+        showSnackbar(message: "This email is already taken!", context: context);
       }
     } catch (e) {
       print(e);
+    }
+  }
+
+  Future<void> checkUserExist({
+    required String email,
+    required String password,
+    required context,
+  }) async {
+    try {
+      final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      if (credential.user!.emailVerified) {
+        goTo(context: context, page: CurvedNavigator());
+      } else {
+        showSnackbar(
+          message: "Email is not verified!\nCheck Your Email Spam",
+          context: context,
+        );
+      }
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        showSnackbar(message: "Invalid Email or Password!", context: context);
+      } else if (e.code == 'wrong-password') {
+        showSnackbar(message: "Invalid Email or Password!", context: context);
+      }
     }
   }
 }

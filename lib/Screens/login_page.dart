@@ -1,24 +1,21 @@
 import 'package:electrocart/Firebase/auth_services.dart';
-import 'package:electrocart/Screens/login_page.dart';
+import 'package:electrocart/Screens/registration_page.dart';
 import 'package:electrocart/Widgets/go_to.dart';
 import 'package:electrocart/Widgets/specific_form_field.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class RegistrationPage extends StatefulWidget {
-  const RegistrationPage({super.key});
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
 
   @override
-  State<RegistrationPage> createState() => _RegistrationPageState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
-class _RegistrationPageState extends State<RegistrationPage> {
+class _LoginPageState extends State<LoginPage> {
   SpecificFormField formFields = SpecificFormField();
-  TextEditingController firstName = TextEditingController();
-  TextEditingController lastName = TextEditingController();
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
-  TextEditingController confirmPassword = TextEditingController();
 
   GlobalKey<FormState> key = GlobalKey<FormState>();
   @override
@@ -36,37 +33,17 @@ class _RegistrationPageState extends State<RegistrationPage> {
               // Welcome Text
               Center(
                 child: Text(
-                  "Welcome To ElectroApp",
-                  style: GoogleFonts.voces(fontSize: 38, color: Colors.black),
+                  "Welcome To ElectroApp!",
+                  style: GoogleFonts.voces(fontSize: 40, color: Colors.black),
                 ),
               ),
               const SizedBox(height: 40),
               // Sign Up Text
               Center(
                 child: Text(
-                  "Sign Up!",
+                  "Login!",
                   style: GoogleFonts.voces(fontSize: 40, color: Colors.black),
                 ),
-              ),
-              // First Name Input Field
-              const SizedBox(height: 20),
-              Text(
-                "First Name",
-                style: GoogleFonts.voces(fontSize: 30, color: Colors.black),
-              ),
-              formFields.nameFormField(
-                controller: firstName,
-                hintText: "first name",
-              ),
-              // Last Name Input Field
-              const SizedBox(height: 20),
-              Text(
-                "Last Name",
-                style: GoogleFonts.voces(fontSize: 30, color: Colors.black),
-              ),
-              formFields.nameFormField(
-                controller: lastName,
-                hintText: "last name",
               ),
               // Email Input Field
               const SizedBox(height: 20),
@@ -82,17 +59,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                 style: GoogleFonts.voces(fontSize: 30, color: Colors.black),
               ),
               formFields.passwordFormField(controller: password),
-              // Confirm Password Input Field
-              const SizedBox(height: 20),
-              Text(
-                "Confirm Password",
-                style: GoogleFonts.voces(fontSize: 30, color: Colors.black),
-              ),
-              formFields.confirPasswordFormField(
-                controller: confirmPassword,
-                actualPassword: password,
-              ),
-              // Sign Up Button
+              // Submit Button
               const SizedBox(height: 20),
               Center(
                 child: OutlinedButton(
@@ -101,9 +68,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   ),
                   onPressed: () async {
                     if (key.currentState!.validate()) {
-                      await AuthServices().addUser(
-                        firstName: firstName.text,
-                        lastName: lastName.text,
+                      AuthServices().checkUserExist(
                         email: email.text,
                         password: password.text,
                         context: context,
@@ -111,20 +76,20 @@ class _RegistrationPageState extends State<RegistrationPage> {
                     }
                   },
                   child: Text(
-                    "Sign Up",
+                    "Login",
                     style: GoogleFonts.voces(fontSize: 15, color: Colors.black),
                   ),
                 ),
               ),
-              // Login Page Button
+              // Regestration Page Button
               const SizedBox(height: 10),
               GestureDetector(
                 onTap: () {
-                  goTo(context: context, page: LoginPage());
+                  goTo(context: context, page: RegistrationPage());
                 },
                 child: Center(
                   child: Text(
-                    "Already Login?",
+                    "Need To SignUp?",
                     style: GoogleFonts.voces(fontSize: 20, color: Colors.white),
                   ),
                 ),
