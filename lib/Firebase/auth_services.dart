@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:electrocart/Screens/admin_page.dart';
 import 'package:electrocart/Screens/login_page.dart';
 import 'package:electrocart/Widgets/curved_Navigator.dart';
 import 'package:electrocart/Widgets/go_to.dart';
@@ -14,6 +15,10 @@ class AuthServices {
     required context,
   }) async {
     try {
+      // Throw Exception if user enter admin email
+      if (email == "admin123@gmail.com") {
+        throw FirebaseAuthException(code: 'email-already-in-use');
+      }
       final credential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
 
@@ -48,6 +53,9 @@ class AuthServices {
     required context,
   }) async {
     try {
+      if (email == "admin123@gmail.com" && password == "admin123@") {
+        goTo(context: context, page: AdminPage());
+      }
       final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: email,
         password: password,
