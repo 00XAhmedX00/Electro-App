@@ -29,7 +29,7 @@ Widget productContainer({
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Image
-          Center(child: Image.asset(image)),
+          Expanded(child: Center(child: image.contains('assets') ?  Image.asset(image) : Image.network(image))),
           // Name of the product
           Center(
             child: Text(

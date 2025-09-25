@@ -3,12 +3,15 @@ import 'package:electrocart/Screens/discount_page.dart';
 import 'package:electrocart/Screens/home_page.dart';
 import 'package:electrocart/Screens/profile_page.dart';
 import 'package:electrocart/Screens/support_page.dart';
+import 'package:electrocart/Widgets/showSnackbar.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 
 class CurvedNavigator extends StatefulWidget {
   final int index;
-  const CurvedNavigator({super.key , this.index = 2});
+  const CurvedNavigator({super.key, this.index = 2});
 
   @override
   State<CurvedNavigator> createState() => _CurvedNavigatorState();
@@ -22,6 +25,7 @@ class _CurvedNavigatorState extends State<CurvedNavigator> {
     super.initState();
     _index = widget.index;
   }
+
   final List<Widget> _pages = const [
     ProfilePage(),
     DiscountPage(),
@@ -52,8 +56,22 @@ class _CurvedNavigatorState extends State<CurvedNavigator> {
         items: items,
         index: _index,
         onTap: (index) {
+          //FirebaseAuth.instance.signOut();
           setState(() {
-            _index = index;
+            if (index == 3) {
+              final user = FirebaseAuth.instance.currentUser;
+              if (user != null) {
+                _index = index;
+              } else {
+                showSnackbar(
+                  message: 'You Must Be logged In to Continue',
+                  context: context,
+                );
+              }
+            }
+            else{
+              _index = index;
+            }
           });
         },
       ),

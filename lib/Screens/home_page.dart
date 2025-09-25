@@ -1,4 +1,5 @@
 import 'package:electrocart/Screens/product_details.dart';
+import 'package:electrocart/Screens/whishlist.dart';
 import 'package:electrocart/Widgets/build_banner.dart';
 import 'package:electrocart/Widgets/go_to.dart';
 import 'package:electrocart/Widgets/product_container.dart';
@@ -90,7 +91,7 @@ class HomePage extends StatelessWidget {
                   ),
                   child: Center(
                     child: IconButton(
-                      onPressed: () {},
+                      onPressed: () {goTo(context: context, page: Whishlist() , routed: true);},
                       icon: Icon(Icons.favorite_border_outlined),
                     ),
                   ),

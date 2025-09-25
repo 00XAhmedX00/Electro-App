@@ -36,7 +36,12 @@ class ProductCart extends StatelessWidget {
                     color: Colors.blueGrey.shade100,
                     borderRadius: BorderRadius.circular(screenWidth * 0.02),
                   ),
-                  child: Image.asset(product['image'], fit: BoxFit.cover),
+                  child: product["image"].toString().contains('assets')
+                            ? Image.asset(product["image"], fit: BoxFit.contain)
+                            : Image.network(
+                                product["image"],
+                                fit: BoxFit.contain,
+                              ),
                 ),
 
                 SizedBox(width: screenWidth * 0.03), // spacing
@@ -62,7 +67,7 @@ class ProductCart extends StatelessWidget {
                       ),
                       SizedBox(height: screenHeight * 0.0135,),
                       Text(
-                        '${product['price'].toString()} EGP',
+                        '${product['price'] * product['quantity']} EGP',
                         style: GoogleFonts.voces(
                           fontSize: screenWidth * 0.045,
                           fontWeight: FontWeight.bold,

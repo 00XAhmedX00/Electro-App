@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:electrocart/Screens/cart_page.dart';
 import 'package:electrocart/Widgets/curved_Navigator.dart';
 import 'package:electrocart/Widgets/go_to.dart';
 import 'package:electrocart/cubit/cart/cart_state.dart';
@@ -151,7 +150,7 @@ class CartLogic extends Cubit<CartState> {
           'id': productId,
           'quantity': quantity,
           'name': productData?['name'] ?? '',
-          'price': productData?['price'] ?? 0,
+          'price': productData?['priceAfterDiscount'] ?? 0,
           'category': productData?['category'] ?? 'Accessories',
           'image':
               productData?['image'] ?? 'assets/images/products/smart_watch.png',
@@ -167,10 +166,48 @@ class CartLogic extends Cubit<CartState> {
   }
 
   Future<void> deleteCartItem(String cartItemId) async {
-    await cartObj.doc(user).
-    collection('products').
-    doc(cartItemId).delete().then((val)=> emit(DeleteCartItem()))
-    .catchError((err) => print('Error : $err'));
-
+    await cartObj
+        .doc(user)
+        .collection('products')
+        .doc(cartItemId)
+        .delete()
+        .then((val) async {
+          emit(DeleteCartItem());
+          await getCartItems();
+        })
+        .catchError((err) => print('Error : $err'));
   }
+
+  Future<void> increaseCartItem(String cartItemId) async {
+    await cartObj
+        .doc(user)
+        .collection('products')
+        .doc(cartItemId)
+        .update({'quantity': FieldValue.increment(1)})
+        .then((value) async{
+          emit(AddCartItem());
+          await getCartItems();
+        });
+  }
+
+
+Future<void> decreaseCartItem(String cartItemId) async {
+  final docRef = cartObj.doc(user).collection('products').doc(cartItemId);
+
+  final snapshot = await docRef.get();
+  if (snapshot.exists) {
+    final currentQuantity = snapshot.data()?['quantity'] ?? 0;
+
+    if (currentQuantity > 1) {
+      // Just decrement
+      await docRef.update({'quantity': FieldValue.increment(-1)});
+    } else {
+      // If quantity will be 0 → delete the product
+      await docRef.delete();
+    }
+
+    emit(RemoveCartItem());
+    await getCartItems();
+  }
+}
 }
