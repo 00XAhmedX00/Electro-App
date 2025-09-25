@@ -10,6 +10,7 @@ Widget botAnswer({required String answer}) {
         padding: const EdgeInsets.only(top: 20.0),
         child: Container(
           width: 200,
+          alignment: Alignment.topLeft,
           decoration: BoxDecoration(
             color: Colors.black12,
             borderRadius: BorderRadius.only(

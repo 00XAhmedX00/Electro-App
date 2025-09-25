@@ -1,3 +1,5 @@
+import 'package:electrocart/Screens/admin_screens/admin_page.dart';
+import 'package:electrocart/Screens/login_page.dart';
 import 'package:electrocart/Screens/registration_page.dart';
 import 'package:electrocart/Widgets/curved_Navigator.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +13,7 @@ void main() async {
     const MaterialApp(
       debugShowCheckedModeBanner: false,
       home: CurvedNavigator(),
-     // home: RegistrationPage(),
+      // home: LoginPage(),
     ),
   );
 }

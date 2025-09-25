@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:electrocart/Screens/admin_page.dart';
+import 'package:electrocart/Firebase/firebase_functions.dart';
+import 'package:electrocart/Screens/admin_screens/admin_page.dart';
 import 'package:electrocart/Screens/login_page.dart';
 import 'package:electrocart/Widgets/curved_Navigator.dart';
 import 'package:electrocart/Widgets/go_to.dart';
@@ -30,7 +31,8 @@ class AuthServices {
             "FirstName": firstName,
             "LastName": lastName,
             "Email": email,
-            "createdAt": Timestamp.now(),
+            "CreatedAt": Timestamp.now(),
+            "Active": true,
           });
       await FirebaseAuth.instance.signOut();
       if (context.mounted) {
@@ -60,6 +62,13 @@ class AuthServices {
         email: email,
         password: password,
       );
+
+      Map<String, dynamic> userData = await FirebaseFunctions().getUser(
+        id: credential.user!.uid,
+      );
+      if (userData['Active'] == false) {
+        throw FirebaseAuthException(code: "not-active");
+      }
       if (credential.user!.emailVerified) {
         goTo(context: context, page: CurvedNavigator());
       } else {
@@ -73,6 +82,8 @@ class AuthServices {
         showSnackbar(message: "Invalid Email or Password!", context: context);
       } else if (e.code == 'wrong-password') {
         showSnackbar(message: "Invalid Email or Password!", context: context);
+      } else if (e.code == 'not-active') {
+        showSnackbar(message: "You have been banned!", context: context);
       }
     }
   }

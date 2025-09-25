@@ -1,3 +1,5 @@
+import 'package:electrocart/Screens/admin_screens/ban_user_page.dart';
+import 'package:electrocart/Widgets/go_to.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -12,7 +14,7 @@ class AdminPage extends StatelessWidget {
           gradient: LinearGradient(
             begin: AlignmentGeometry.topLeft,
             end: AlignmentGeometry.bottomRight,
-            colors: [Colors.blueAccent, Colors.black],
+            colors: [Colors.purple, Colors.black],
           ),
         ),
         child: Center(
@@ -21,18 +23,21 @@ class AdminPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               GestureDetector(
+                onTap: () {
+                  goTo(context: context, page: BanUserPage(), routed: true);
+                },
                 child: Container(
                   width: 100,
                   height: 100,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                     gradient: LinearGradient(
-                      colors: [Colors.blue.shade300, Colors.blue.shade600],
+                      colors: [Colors.purple.shade300, Colors.purple.shade600],
                     ),
                   ),
                   child: Center(
                     child: Text(
-                      "Add User",
+                      "Delete User",
                       style: GoogleFonts.aBeeZee(color: Colors.white),
                     ),
                   ),

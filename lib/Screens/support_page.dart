@@ -1,5 +1,8 @@
+import 'package:electrocart/Firebase/firebase_functions.dart';
 import 'package:electrocart/Widgets/bot_answer.dart';
 import 'package:electrocart/Widgets/button_chat.dart';
+import 'package:electrocart/Widgets/specific_form_field.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class SupportPage extends StatefulWidget {
@@ -10,6 +13,8 @@ class SupportPage extends StatefulWidget {
 }
 
 class _SupportPageState extends State<SupportPage> {
+  final user = FirebaseAuth.instance.currentUser;
+
   int answer = 0;
   String sendMessage() {
     if (answer == 1) {
@@ -32,112 +37,165 @@ class _SupportPageState extends State<SupportPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Padding(
+    TextEditingController userMessage = TextEditingController();
+    return Scaffold(
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: SpecificFormField().chatFormField(
+          controller: userMessage,
+          sendMessage: () async {
+            if (userMessage.text.isNotEmpty) {
+              await FirebaseFunctions().sendMessage(
+                id: user!.uid,
+                message: userMessage.text,
+                sender: "asd",
+              );
+              userMessage.clear();
+            }
+          },
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      body: Padding(
         padding: const EdgeInsets.only(left: 10.0, right: 10.0, top: 50),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 20.0),
-                  child: Container(
-                    width: 200,
-                    height: 300,
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 20.0),
+                    child: Container(
+                      width: 200,
+                      height: 300,
+                      decoration: BoxDecoration(
+                        color: Colors.black12,
+                        borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(10),
+                          bottomRight: Radius.circular(10),
+                          topLeft: Radius.circular(10),
+                        ),
+                        border: Border.all(color: Colors.purple, width: 2),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            chatButton(
+                              message: "Return Product",
+                              updateChat: () {
+                                setState(() {
+                                  setState(() {
+                                    answer = 1;
+                                  });
+                                });
+                              },
+                            ),
+                            const SizedBox(height: 10),
+                            chatButton(
+                              message: "Ask for shippment",
+                              updateChat: () {
+                                setState(() {
+                                  setState(() {
+                                    answer = 2;
+                                  });
+                                });
+                              },
+                            ),
+                            const SizedBox(height: 10),
+                            chatButton(
+                              message: "Deals",
+                              updateChat: () {
+                                setState(() {
+                                  setState(() {
+                                    answer = 3;
+                                  });
+                                });
+                              },
+                            ),
+                            const SizedBox(height: 10),
+                            chatButton(
+                              message: "App Features",
+                              updateChat: () {
+                                setState(() {
+                                  setState(() {
+                                    answer = 4;
+                                  });
+                                });
+                              },
+                            ),
+                            const SizedBox(height: 10),
+                            chatButton(
+                              message: "Customer service",
+                              updateChat: () {
+                                setState(() {
+                                  setState(() {
+                                    answer = 5;
+                                  });
+                                });
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  Container(
+                    width: 50,
+                    height: 50,
                     decoration: BoxDecoration(
                       color: Colors.black12,
-                      borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(10),
-                        bottomRight: Radius.circular(10),
-                        topLeft: Radius.circular(10),
-                      ),
+                      borderRadius: BorderRadius.circular(30),
                       border: Border.all(color: Colors.purple, width: 2),
                     ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          chatButton(
-                            message: "Return Product",
-                            updateChat: () {
-                              setState(() {
-                                setState(() {
-                                  answer = 1;
-                                });
-                              });
-                            },
-                          ),
-                          const SizedBox(height: 10),
-                          chatButton(
-                            message: "Ask for shippment",
-                            updateChat: () {
-                              setState(() {
-                                setState(() {
-                                  answer = 2;
-                                });
-                              });
-                            },
-                          ),
-                          const SizedBox(height: 10),
-                          chatButton(
-                            message: "Deals",
-                            updateChat: () {
-                              setState(() {
-                                setState(() {
-                                  answer = 3;
-                                });
-                              });
-                            },
-                          ),
-                          const SizedBox(height: 10),
-                          chatButton(
-                            message: "App Features",
-                            updateChat: () {
-                              setState(() {
-                                setState(() {
-                                  answer = 4;
-                                });
-                              });
-                            },
-                          ),
-                          const SizedBox(height: 10),
-                          chatButton(
-                            message: "Customer service",
-                            updateChat: () {
-                              setState(() {
-                                setState(() {
-                                  answer = 5;
-                                });
-                              });
-                            },
-                          ),
-                        ],
-                      ),
+                    child: Icon(Icons.support_agent_outlined, size: 40),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
+              if (answer != 0) botAnswer(answer: sendMessage()),
+
+              const SizedBox(height: 30),
+              StreamBuilder(
+                stream: FirebaseFunctions().getAllMessages(id: user!.uid),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Center(child: Text("An Error Happend!"));
+                  } else if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                    return Center(child: Text("No Data!"));
+                  }
+                  final message = snapshot.data!.docs;
+                  return Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ...message.map((message) {
+                          return botAnswer(answer: message['Msg']);
+                          // SizedBox(
+                          //   width: double.infinity,
+                          //   child: Text(
+                          //     message['Msg'],
+                          //     textAlign: TextAlign.start,
+                          //   ),
+                          // );
+                        }),
+                      ],
                     ),
-                  ),
-                ),
-                const SizedBox(width: 10),
-                Container(
-                  width: 50,
-                  height: 50,
-                  decoration: BoxDecoration(
-                    color: Colors.black12,
-                    borderRadius: BorderRadius.circular(30),
-                    border: Border.all(color: Colors.purple, width: 2),
-                  ),
-                  child: Icon(Icons.support_agent_outlined, size: 40),
-                ),
-              ],
-            ),
-            const SizedBox(height: 20),
-            if (answer != 0) botAnswer(answer: sendMessage()),
-          ],
+                  );
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );

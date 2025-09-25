@@ -143,4 +143,43 @@ class SpecificFormField {
       ),
     );
   }
+
+  Widget chatFormField({
+    required TextEditingController controller,
+    required Function sendMessage,
+  }) {
+    return SizedBox(
+      width: double.maxFinite,
+      child: TextFormField(
+        controller: controller,
+        decoration: InputDecoration(
+          hintText: "Enter a Message...",
+          hintStyle: GoogleFonts.voces(fontSize: 15, color: Colors.black38),
+          prefixIcon: Icon(Icons.message_outlined),
+          suffixIcon: IconButton(
+            onPressed: () {
+              sendMessage();
+            },
+            icon: Icon(Icons.send_outlined),
+          ),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide(color: Colors.black),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide(color: Colors.purple, width: 3),
+          ),
+          filled: true,
+          fillColor: Colors.purple.shade100,
+        ),
+        validator: (value) {
+          if (value!.isEmpty) {
+            return "Enter a Message!";
+          }
+          return null;
+        },
+      ),
+    );
+  }
 }
