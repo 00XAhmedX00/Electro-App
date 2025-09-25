@@ -12,7 +12,7 @@ void main() async {
   runApp(
     const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: AdminPage(),
+      home: CurvedNavigator(),
       // home: LoginPage(),
     ),
   );

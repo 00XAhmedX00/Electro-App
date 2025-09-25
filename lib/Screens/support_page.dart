@@ -42,7 +42,7 @@ class _SupportPageState extends State<SupportPage> {
     } else if (answer == 4) {
       return "Our Electro-App has user-friendly navigation, advanced product search and filtering, secure account management, and detailed product pages with specifications, reviews, and ratings. It should also provide shopping cart and wishlist functionality, multiple secure payment options, real-time order tracking, and personalized recommendations. Additional features like flash deals, promotional offers, customer support chat, and easy return/refund policies enhance the shopping experience, while push notifications keep users updated on new arrivals, discounts, and order status.";
     } else {
-      return "Still not available!";
+      return "Chat with customer service!";
     }
   }
 
@@ -171,36 +171,37 @@ class _SupportPageState extends State<SupportPage> {
                 ],
               ),
               const SizedBox(height: 20),
-              if (answer != 0) botAnswer(answer: sendMessage()),
+              if (answer != 0 && answer != 5) botAnswer(answer: sendMessage()),
 
               const SizedBox(height: 30),
-              StreamBuilder(
-                stream: FirebaseFunctions().getAllMessages(id: user!.uid),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(child: CircularProgressIndicator());
-                  } else if (snapshot.hasError) {
-                    return Center(child: Text("An Error Happend!"));
-                  } else if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                    return Center(child: Text("No Data!"));
-                  }
-                  final message = snapshot.data!.docs;
-                  return Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        ...message.map((message) {
-                          print(userName);
-                          return message['Sender'] == userName
-                              ? userAnswer(answer: message['Msg'])
-                              : botAnswer(answer: message['Msg']);
-                        }),
-                      ],
-                    ),
-                  );
-                },
-              ),
+              if (answer == 5)
+                StreamBuilder(
+                  stream: FirebaseFunctions().getAllMessages(id: user!.uid),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(child: CircularProgressIndicator());
+                    } else if (snapshot.hasError) {
+                      return Center(child: Text("An Error Happend!"));
+                    } else if (!snapshot.hasData ||
+                        snapshot.data!.docs.isEmpty) {
+                      return Center(child: Text("No Data!"));
+                    }
+                    final message = snapshot.data!.docs;
+                    return Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ...message.map((message) {
+                            return message['Sender'] == userName
+                                ? userAnswer(answer: message['Msg'])
+                                : botAnswer(answer: message['Msg']);
+                          }),
+                        ],
+                      ),
+                    );
+                  },
+                ),
             ],
           ),
         ),
