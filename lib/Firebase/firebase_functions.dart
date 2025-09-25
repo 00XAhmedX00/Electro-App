@@ -164,4 +164,38 @@ class FirebaseFunctions {
     }
     await firestore.collection("products").doc(id).delete();
   }
+
+  Future<Map<String, dynamic>> getProductData({
+    required String productName,
+  }) async {
+    String id = await getProductId(productName: productName);
+    DocumentSnapshot snapshot = await firestore
+        .collection("products")
+        .doc(id)
+        .get();
+
+    return snapshot.data() as Map<String, dynamic>;
+  }
+
+  Future<void> updateProduct({
+    required String name,
+    required String description,
+    required double price,
+    required int discount,
+    required String category,
+    required String imageUrl,
+    required double rate,
+  }) async {
+    double priceAfterDiscount = price - (price * discount / 100);
+    String id = await getProductId(productName: name);
+    await firestore.collection("products").doc(id).update({
+      "description": description,
+      "image": imageUrl,
+      "name": name,
+      "price": price,
+      "priceAfterDiscount": priceAfterDiscount,
+      "category": category,
+      "rate": rate,
+    });
+  }
 }

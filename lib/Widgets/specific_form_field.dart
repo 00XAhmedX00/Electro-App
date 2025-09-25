@@ -245,7 +245,7 @@ class SpecificFormField {
           filled: true,
           fillColor: const Color.fromARGB(162, 200, 230, 201),
         ),
-        maxLength: 6,
+        maxLength: 12,
         inputFormatters: [FilteringTextInputFormatter.digitsOnly],
         validator: (value) {
           if (value!.isEmpty) {

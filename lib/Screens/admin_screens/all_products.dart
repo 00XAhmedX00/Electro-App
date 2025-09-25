@@ -156,6 +156,9 @@ class _AllProductsState extends State<AllProducts> {
                                       context: context,
                                       page: UpdateProductPage(
                                         productName: product['name'],
+                                        update: () {
+                                          setState(() {});
+                                        },
                                       ),
                                       routed: true,
                                     );
