@@ -14,15 +14,15 @@ class _BanUserPageState extends State<BanUserPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.purple,
-        title: Text("Delete User"),
+        backgroundColor: Colors.green.shade300,
+        title: Text("Ban User"),
       ),
       body: FutureBuilder(
         future: FirebaseFunctions().getAllUsers(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
-              child: CircularProgressIndicator(color: Colors.purple),
+              child: CircularProgressIndicator(color: Colors.green),
             );
           } else if (!snapshot.hasData) {
             return Center(child: Text("No Users Available!"));
@@ -37,57 +37,57 @@ class _BanUserPageState extends State<BanUserPage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 ...users!.map((user) {
-                  return Container(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          Colors.purple.shade300,
-                          Colors.purple.shade600,
-                        ],
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 10.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.green.shade200,
+                        border: Border.all(color: Colors.green, width: 3),
+                        borderRadius: BorderRadius.circular(12),
                       ),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Username: ${user['FirstName']}",
-                                style: GoogleFonts.voces(fontSize: 20),
-                              ),
-                              Text(
-                                "Email: ${user['Email']}",
-                                style: GoogleFonts.voces(fontSize: 20),
-                              ),
-                            ],
-                          ),
-                          ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.red,
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Username: ${user['FirstName']}",
+                                  style: GoogleFonts.voces(fontSize: 20),
+                                ),
+                                Text(
+                                  "Email: ${user['Email']}",
+                                  style: GoogleFonts.voces(fontSize: 20),
+                                ),
+                              ],
                             ),
-                            onPressed: () async {
-                              if (user['Active']) {
-                                await FirebaseFunctions().banUser(
-                                  userEmail: user['Email'],
-                                );
-                              } else {
-                                await FirebaseFunctions().unBanUser(
-                                  userEmail: user['Email'],
-                                );
-                              }
-                              setState(() {});
-                            },
-                            child: Text(
-                              user['Active'] == true ? "Ban" : "Unban",
-                              style: GoogleFonts.aBeeZee(color: Colors.white),
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.transparent,
+                                side: BorderSide(color: Colors.red, width: 2),
+                              ),
+                              onPressed: () async {
+                                if (user['Active']) {
+                                  await FirebaseFunctions().banUser(
+                                    userEmail: user['Email'],
+                                  );
+                                } else {
+                                  await FirebaseFunctions().unBanUser(
+                                    userEmail: user['Email'],
+                                  );
+                                }
+                                setState(() {});
+                              },
+                              child: Text(
+                                user['Active'] == true ? "Ban" : "Unban",
+                                style: GoogleFonts.aBeeZee(color: Colors.white),
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   );

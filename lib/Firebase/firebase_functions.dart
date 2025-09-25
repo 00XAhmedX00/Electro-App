@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 
 class FirebaseFunctions {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -110,5 +113,47 @@ class FirebaseFunctions {
       "Timestamp": Timestamp.now(),
     });
     await firestore.collection("Chats").doc(id).set({"isSend": true});
+  }
+
+  Future<void> saveProduct({
+    required String name,
+    required String description,
+    required double price,
+    required int discount,
+    required String category,
+    required String imageUrl,
+  }) async {
+    double priceAfterDiscount = price - (price * discount / 100);
+    await firestore.collection("products").add({
+      "description": description,
+      "image": imageUrl,
+      "name": name,
+      "price": price,
+      "priceAfterDiscount": priceAfterDiscount,
+      "category": category,
+      "rate": double.parse((1 + Random().nextDouble() * 4).toStringAsFixed(2)),
+    });
+  }
+
+  Future<List<Map<String, dynamic>>> getAllProducts() async {
+    QuerySnapshot snapshot = await firestore.collection("products").get();
+
+    return snapshot.docs.map((product) {
+      return product.data() as Map<String, dynamic>;
+    }).toList();
+  }
+
+  Future<String> getProductId({required String productName}) async {
+    QuerySnapshot snapshot = await firestore
+        .collection("products")
+        .where("name", isEqualTo: productName)
+        .get();
+    String id = snapshot.docs[0].id;
+    return id;
+  }
+
+  Future<void> deleteProduct({required String productName}) async {
+    String id = await getProductId(productName: productName);
+    firestore.collection("products").doc(id).delete();
   }
 }
