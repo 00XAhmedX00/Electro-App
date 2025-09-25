@@ -47,3 +47,52 @@ Widget botAnswer({required String answer}) {
     ],
   );
 }
+
+Widget userAnswer({required String answer}) {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.start,
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      // Icon
+      Container(
+        width: 50,
+        height: 50,
+        decoration: BoxDecoration(
+          color: Colors.black12,
+          borderRadius: BorderRadius.circular(30),
+          border: Border.all(color: Colors.purple, width: 2),
+        ),
+        child: Icon(Icons.person_outline, size: 40),
+      ),
+
+      const SizedBox(width: 10),
+
+      Padding(
+        padding: const EdgeInsets.only(top: 20.0),
+        child: Container(
+          width: 200,
+          decoration: BoxDecoration(
+            color: Colors.black12,
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(10),
+              bottomRight: Radius.circular(10),
+              topLeft: Radius.circular(10),
+            ),
+            border: Border.all(color: Colors.purple, width: 2),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              answer,
+              style: GoogleFonts.voces(
+                color: Colors.black,
+                fontSize: 15,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ),
+      ),
+    ],
+  );
+}

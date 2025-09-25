@@ -1,5 +1,5 @@
 import 'package:electrocart/Firebase/firebase_functions.dart';
-import 'package:electrocart/Widgets/bot_answer.dart';
+import 'package:electrocart/Widgets/answer_buttons.dart';
 import 'package:electrocart/Widgets/button_chat.dart';
 import 'package:electrocart/Widgets/specific_form_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -14,8 +14,19 @@ class SupportPage extends StatefulWidget {
 
 class _SupportPageState extends State<SupportPage> {
   final user = FirebaseAuth.instance.currentUser;
-
   int answer = 0;
+  String? userName = "";
+
+  @override
+  void initState() {
+    super.initState();
+    getUserName();
+  }
+
+  void getUserName() async {
+    userName = await FirebaseFunctions().getUserName(id: user!.uid);
+  }
+
   String sendMessage() {
     if (answer == 1) {
       return "Our return policy allows products to be returned within 7–14 days "
@@ -48,7 +59,7 @@ class _SupportPageState extends State<SupportPage> {
               await FirebaseFunctions().sendMessage(
                 id: user!.uid,
                 message: userMessage.text,
-                sender: "asd",
+                sender: userName!,
               );
               userMessage.clear();
             }
@@ -180,14 +191,10 @@ class _SupportPageState extends State<SupportPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         ...message.map((message) {
-                          return botAnswer(answer: message['Msg']);
-                          // SizedBox(
-                          //   width: double.infinity,
-                          //   child: Text(
-                          //     message['Msg'],
-                          //     textAlign: TextAlign.start,
-                          //   ),
-                          // );
+                          print(userName);
+                          return message['Sender'] == userName
+                              ? userAnswer(answer: message['Msg'])
+                              : botAnswer(answer: message['Msg']);
                         }),
                       ],
                     ),

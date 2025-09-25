@@ -14,6 +14,13 @@ class FirebaseFunctions {
     return users;
   }
 
+  Future<List<String>> getAllUsersIds() async {
+    QuerySnapshot snapshot = await firestore.collection("Users").get();
+    return snapshot.docs.map((user) {
+      return user.id;
+    }).toList();
+  }
+
   Future<Map<String, dynamic>> getUser({required String id}) async {
     DocumentSnapshot snapshot = await firestore
         .collection("Users")
@@ -21,6 +28,35 @@ class FirebaseFunctions {
         .get();
 
     return snapshot.data() as Map<String, dynamic>;
+  }
+
+  Future<String?> getUserName({required String id}) async {
+    final Map<String, dynamic> userData = await getUser(id: id);
+
+    if (userData['FirstName'] != null && userData['LastName'] != null) {
+      return "${userData['FirstName']} ${userData['LastName']}";
+    }
+
+    return null;
+  }
+
+  Future<List<String>> getChatIds() async {
+    QuerySnapshot snapshot = await firestore.collection("Chats").get();
+
+    return snapshot.docs.map((doc) {
+      return doc.id;
+    }).toList();
+  }
+
+  Future<List<Map<String, dynamic>>> getUsersChats() async {
+    final List<String> chatIds = await getChatIds();
+    List<Map<String, dynamic>> users = [];
+
+    for (int i = 0; i < chatIds.length; i++) {
+      users.add(await getUser(id: chatIds[i]));
+    }
+
+    return users;
   }
 
   Future<String> findUserId({required String userEmail}) async {
@@ -73,5 +109,6 @@ class FirebaseFunctions {
       "Receiver": "Admin",
       "Timestamp": Timestamp.now(),
     });
+    await firestore.collection("Chats").doc(id).update({"isSend": true});
   }
 }
