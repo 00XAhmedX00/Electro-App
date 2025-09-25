@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class FirebaseFunctions {
@@ -110,5 +112,90 @@ class FirebaseFunctions {
       "Timestamp": Timestamp.now(),
     });
     await firestore.collection("Chats").doc(id).set({"isSend": true});
+  }
+
+  Future<void> saveProduct({
+    required String name,
+    required String description,
+    required double price,
+    required int discount,
+    required String category,
+    required String imageUrl,
+  }) async {
+    double priceAfterDiscount = price - (price * discount / 100);
+    await firestore.collection("products").add({
+      "description": description,
+      "image": imageUrl,
+      "name": name,
+      "price": price,
+      "priceAfterDiscount": priceAfterDiscount,
+      "category": category,
+      "rate": double.parse((1 + Random().nextDouble() * 4).toStringAsFixed(2)),
+    });
+  }
+
+  Future<List<Map<String, dynamic>>> getAllProducts() async {
+    QuerySnapshot snapshot = await firestore.collection("products").get();
+
+    return snapshot.docs.map((product) {
+      return product.data() as Map<String, dynamic>;
+    }).toList();
+  }
+
+  Future<String> getProductId({required String productName}) async {
+    QuerySnapshot snapshot = await firestore
+        .collection("products")
+        .where("name", isEqualTo: productName)
+        .get();
+    String id = snapshot.docs[0].id;
+    return id;
+  }
+
+  Future<void> deleteProduct({required String productName}) async {
+    String id = await getProductId(productName: productName);
+    List<String> usersIds = await getAllUsersIds();
+    for (int i = 0; i < usersIds.length; i++) {
+      await firestore
+          .collection("cart")
+          .doc(usersIds[i])
+          .collection("products")
+          .doc(id)
+          .delete();
+    }
+    await firestore.collection("products").doc(id).delete();
+  }
+
+  Future<Map<String, dynamic>> getProductData({
+    required String productName,
+  }) async {
+    String id = await getProductId(productName: productName);
+    DocumentSnapshot snapshot = await firestore
+        .collection("products")
+        .doc(id)
+        .get();
+
+    return snapshot.data() as Map<String, dynamic>;
+  }
+
+  Future<void> updateProduct({
+    required String name,
+    required String description,
+    required double price,
+    required int discount,
+    required String category,
+    required String imageUrl,
+    required double rate,
+  }) async {
+    double priceAfterDiscount = price - (price * discount / 100);
+    String id = await getProductId(productName: name);
+    await firestore.collection("products").doc(id).update({
+      "description": description,
+      "image": imageUrl,
+      "name": name,
+      "price": price,
+      "priceAfterDiscount": priceAfterDiscount,
+      "category": category,
+      "rate": rate,
+    });
   }
 }
