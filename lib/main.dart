@@ -14,6 +14,7 @@ void main() async {
       debugShowCheckedModeBanner: false,
       home: CurvedNavigator(),
       // home: LoginPage(),
+      
     ),
   );
 }

@@ -7,7 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 
 class CurvedNavigator extends StatefulWidget {
-  const CurvedNavigator({super.key});
+  final int index;
+  const CurvedNavigator({super.key , this.index = 2});
 
   @override
   State<CurvedNavigator> createState() => _CurvedNavigatorState();
@@ -16,6 +17,11 @@ class CurvedNavigator extends StatefulWidget {
 class _CurvedNavigatorState extends State<CurvedNavigator> {
   int _index = 2; // Start with Home
 
+  @override
+  void initState() {
+    super.initState();
+    _index = widget.index;
+  }
   final List<Widget> _pages = const [
     ProfilePage(),
     DiscountPage(),

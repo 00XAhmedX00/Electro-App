@@ -95,7 +95,7 @@ class ProductCart extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          product['count'].toString(),
+                          product['quantity'].toString(),
                           style: GoogleFonts.voces(
                             fontSize: screenWidth * 0.045,
                           ),
