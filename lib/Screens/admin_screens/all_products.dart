@@ -1,4 +1,6 @@
 import 'package:electrocart/Firebase/firebase_functions.dart';
+import 'package:electrocart/Screens/admin_screens/update_product_Page.dart';
+import 'package:electrocart/Widgets/go_to.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -144,30 +146,65 @@ class _AllProductsState extends State<AllProducts> {
                         Expanded(
                           child: Align(
                             alignment: AlignmentGeometry.centerRight,
-                            child: InkWell(
-                              onTap: () async {
-                                await FirebaseFunctions().deleteProduct(
-                                  productName: product['name'],
-                                );
-                                setState(() {});
-                              },
-                              child: Container(
-                                width: 80,
-                                height: 40,
-                                decoration: BoxDecoration(
-                                  color: Colors.red,
-                                  borderRadius: BorderRadius.circular(30),
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    "Delete",
-                                    style: GoogleFonts.voces(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                //Update Button
+                                InkWell(
+                                  onTap: () async {
+                                    goTo(
+                                      context: context,
+                                      page: UpdateProductPage(
+                                        productName: product['name'],
+                                      ),
+                                      routed: true,
+                                    );
+                                  },
+                                  child: Container(
+                                    width: 80,
+                                    height: 40,
+                                    decoration: BoxDecoration(
+                                      color: Colors.green,
+                                      borderRadius: BorderRadius.circular(30),
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        "Update",
+                                        style: GoogleFonts.voces(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
+                                //Delete Button
+                                InkWell(
+                                  onTap: () async {
+                                    await FirebaseFunctions().deleteProduct(
+                                      productName: product['name'],
+                                    );
+                                    setState(() {});
+                                  },
+                                  child: Container(
+                                    width: 80,
+                                    height: 40,
+                                    decoration: BoxDecoration(
+                                      color: Colors.red,
+                                      borderRadius: BorderRadius.circular(30),
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        "Delete",
+                                        style: GoogleFonts.voces(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ),
