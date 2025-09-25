@@ -54,7 +54,7 @@ class AdminPage extends StatelessWidget {
               // Delete User
               adminPageButton(
                 context: context,
-                text: "Delete User",
+                text: "Ban User",
                 page: BanUserPage(),
               ),
               // User Messages

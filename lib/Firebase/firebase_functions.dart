@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 
 class FirebaseFunctions {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -154,6 +153,15 @@ class FirebaseFunctions {
 
   Future<void> deleteProduct({required String productName}) async {
     String id = await getProductId(productName: productName);
-    firestore.collection("products").doc(id).delete();
+    List<String> usersIds = await getAllUsersIds();
+    for (int i = 0; i < usersIds.length; i++) {
+      await firestore
+          .collection("cart")
+          .doc(usersIds[i])
+          .collection("products")
+          .doc(id)
+          .delete();
+    }
+    await firestore.collection("products").doc(id).delete();
   }
 }
