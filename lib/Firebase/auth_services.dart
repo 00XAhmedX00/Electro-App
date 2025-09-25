@@ -58,11 +58,11 @@ class AuthServices {
       if (email == "admin123@gmail.com" && password == "admin123@") {
         goTo(context: context, page: AdminPage());
       }
-      final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-
+      final credential = await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: email, password: password)
+          .catchError((err) {
+            throw FirebaseAuthException(code: 'user-not-found');
+          });
       Map<String, dynamic> userData = await FirebaseFunctions().getUser(
         id: credential.user!.uid,
       );

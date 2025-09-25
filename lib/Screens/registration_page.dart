@@ -19,6 +19,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
   TextEditingController confirmPassword = TextEditingController();
+  bool refresh = false;
 
   GlobalKey<FormState> key = GlobalKey<FormState>();
   @override
@@ -101,6 +102,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   ),
                   onPressed: () async {
                     if (key.currentState!.validate()) {
+                      refresh = true;
+                      setState(() {});
                       await AuthServices().addUser(
                         firstName: firstName.text,
                         lastName: lastName.text,
@@ -110,10 +113,21 @@ class _RegistrationPageState extends State<RegistrationPage> {
                       );
                     }
                   },
-                  child: Text(
-                    "Sign Up",
-                    style: GoogleFonts.voces(fontSize: 15, color: Colors.black),
-                  ),
+                  child: refresh
+                      ? SizedBox(
+                          width: 10,
+                          height: 10,
+                          child: const CircularProgressIndicator(
+                            color: Colors.greenAccent,
+                          ),
+                        )
+                      : Text(
+                          "Sign Up",
+                          style: GoogleFonts.voces(
+                            fontSize: 15,
+                            color: Colors.black,
+                          ),
+                        ),
                 ),
               ),
               // Login Page Button

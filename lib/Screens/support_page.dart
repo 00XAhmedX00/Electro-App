@@ -4,6 +4,7 @@ import 'package:electrocart/Widgets/button_chat.dart';
 import 'package:electrocart/Widgets/specific_form_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class SupportPage extends StatefulWidget {
   const SupportPage({super.key});
@@ -50,22 +51,24 @@ class _SupportPageState extends State<SupportPage> {
   Widget build(BuildContext context) {
     TextEditingController userMessage = TextEditingController();
     return Scaffold(
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: SpecificFormField().chatFormField(
-          controller: userMessage,
-          sendMessage: () async {
-            if (userMessage.text.isNotEmpty) {
-              await FirebaseFunctions().sendMessage(
-                id: user!.uid,
-                message: userMessage.text,
-                sender: userName!,
-              );
-              userMessage.clear();
-            }
-          },
-        ),
-      ),
+      floatingActionButton: answer == 5
+          ? Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: SpecificFormField().chatFormField(
+                controller: userMessage,
+                sendMessage: () async {
+                  if (userMessage.text.isNotEmpty) {
+                    await FirebaseFunctions().sendMessage(
+                      id: user!.uid,
+                      message: userMessage.text,
+                      sender: userName!,
+                    );
+                  }
+                  userMessage.clear();
+                },
+              ),
+            )
+          : Container(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: Padding(
         padding: const EdgeInsets.only(left: 10.0, right: 10.0, top: 50),
@@ -184,24 +187,56 @@ class _SupportPageState extends State<SupportPage> {
                       return Center(child: Text("An Error Happend!"));
                     } else if (!snapshot.hasData ||
                         snapshot.data!.docs.isEmpty) {
-                      return Center(child: Text("No Data!"));
+                      return Center(
+                        child: Text(
+                          "Send Message to our support team ⬇️",
+                          style: GoogleFonts.voces(fontWeight: FontWeight.bold),
+                        ),
+                      );
                     }
                     final message = snapshot.data!.docs;
                     return Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          ...message.map((message) {
-                            return message['Sender'] == userName
-                                ? userAnswer(answer: message['Msg'])
-                                : botAnswer(answer: message['Msg']);
-                          }),
-                        ],
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.purple.shade100,
+                          border: Border.all(color: Colors.purple),
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(12),
+                            topRight: Radius.circular(12),
+                          ),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                            bottom: 150.0,
+                            left: 5.0,
+                            right: 5.0,
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Center(
+                                child: Text(
+                                  "Customer Service",
+                                  style: GoogleFonts.voces(
+                                    fontSize: 30,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                              ...message.map((message) {
+                                return message['Sender'] == userName
+                                    ? userAnswer(answer: message['Msg'])
+                                    : botAnswer(answer: message['Msg']);
+                              }),
+                            ],
+                          ),
+                        ),
                       ),
                     );
                   },
                 ),
+              const SizedBox(height: 20),
             ],
           ),
         ),

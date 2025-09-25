@@ -16,6 +16,7 @@ class _LoginPageState extends State<LoginPage> {
   SpecificFormField formFields = SpecificFormField();
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
+  bool refresh = false;
 
   GlobalKey<FormState> key = GlobalKey<FormState>();
   @override
@@ -68,17 +69,32 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   onPressed: () async {
                     if (key.currentState!.validate()) {
-                      AuthServices().checkUserExist(
+                      refresh = true;
+                      setState(() {});
+                      await AuthServices().checkUserExist(
                         email: email.text,
                         password: password.text,
                         context: context,
                       );
+                      refresh = false;
+                      setState(() {});
                     }
                   },
-                  child: Text(
-                    "Login",
-                    style: GoogleFonts.voces(fontSize: 15, color: Colors.black),
-                  ),
+                  child: refresh
+                      ? SizedBox(
+                          width: 10,
+                          height: 10,
+                          child: const CircularProgressIndicator(
+                            color: Colors.greenAccent,
+                          ),
+                        )
+                      : Text(
+                          "Login",
+                          style: GoogleFonts.voces(
+                            fontSize: 15,
+                            color: Colors.black,
+                          ),
+                        ),
                 ),
               ),
               // Regestration Page Button

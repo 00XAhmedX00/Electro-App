@@ -109,6 +109,6 @@ class FirebaseFunctions {
       "Receiver": "Admin",
       "Timestamp": Timestamp.now(),
     });
-    await firestore.collection("Chats").doc(id).update({"isSend": true});
+    await firestore.collection("Chats").doc(id).set({"isSend": true});
   }
 }
