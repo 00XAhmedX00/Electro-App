@@ -332,11 +332,12 @@ class SpecificFormField {
         ),
         hintText: "Select Category",
         dropdownMenuEntries: const [
-          DropdownMenuEntry(value: "📱 Mobile", label: "Mobile"),
+          DropdownMenuEntry(value: "📱 Mobile", label: "Phones"),
           DropdownMenuEntry(value: "📺 TV", label: "TV"),
-          DropdownMenuEntry(value: "🎮 Console", label: "Console"),
-          DropdownMenuEntry(value: "💻 Laptop", label: "Laptop"),
-          DropdownMenuEntry(value: "🎧 Airpod", label: "Airpod"),
+          DropdownMenuEntry(value: "🎮 Console", label: "Consoles"),
+          DropdownMenuEntry(value: "💻 Laptop", label: "Laptops"),
+          DropdownMenuEntry(value: "🎧Airpod", label: "Airpods"),
+          DropdownMenuEntry(value: "📷 Cameras", label: "Cameras"),
         ],
       ),
     );
