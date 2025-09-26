@@ -5,7 +5,6 @@ import 'package:electrocart/Screens/profile_page.dart';
 import 'package:electrocart/Screens/support_page.dart';
 import 'package:electrocart/Widgets/showSnackbar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 
@@ -68,8 +67,7 @@ class _CurvedNavigatorState extends State<CurvedNavigator> {
                   context: context,
                 );
               }
-            }
-            else{
+            } else {
               _index = index;
             }
           });

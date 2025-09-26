@@ -1,5 +1,3 @@
-import 'package:electrocart/Screens/product_details.dart';
-import 'package:electrocart/Widgets/go_to.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 

@@ -117,7 +117,7 @@ class SpecificFormField {
       child: TextFormField(
         controller: controller,
         decoration: InputDecoration(
-          hintText: "Enter your password",
+          hintText: "Enter your confirm password",
           hintStyle: GoogleFonts.voces(fontSize: 15, color: Colors.black38),
           prefixIcon: Icon(Icons.password_outlined),
           border: OutlineInputBorder(
@@ -332,11 +332,11 @@ class SpecificFormField {
         ),
         hintText: "Select Category",
         dropdownMenuEntries: const [
-          DropdownMenuEntry(value: "📱 Mobile", label: "Phones"),
+          DropdownMenuEntry(value: "📱 Phones", label: "Phones"),
           DropdownMenuEntry(value: "📺 TV", label: "TV"),
-          DropdownMenuEntry(value: "🎮 Console", label: "Consoles"),
-          DropdownMenuEntry(value: "💻 Laptop", label: "Laptops"),
-          DropdownMenuEntry(value: "🎧Airpod", label: "Airpods"),
+          DropdownMenuEntry(value: "🎮 Consoles", label: "Consoles"),
+          DropdownMenuEntry(value: "💻 Laptops", label: "Laptops"),
+          DropdownMenuEntry(value: "🎧 Airpods", label: "Airpods"),
           DropdownMenuEntry(value: "📷 Cameras", label: "Cameras"),
         ],
       ),

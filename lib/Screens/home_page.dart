@@ -29,7 +29,7 @@ class HomePage extends StatelessWidget {
     List<Map<String, dynamic>> products = [];
 
     double height = MediaQuery.of(context).size.height;
-    double width = MediaQuery.of(context).size.width;
+    // double width = MediaQuery.of(context).size.width;
 
     return BlocProvider(
       create: (context) => ProductLogic()..getAllProducts(),
