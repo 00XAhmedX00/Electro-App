@@ -14,7 +14,6 @@ class SupportPage extends StatefulWidget {
 }
 
 class _SupportPageState extends State<SupportPage> {
-  final user = FirebaseAuth.instance.currentUser;
   int answer = 0;
   String? userName = "";
 
@@ -25,7 +24,9 @@ class _SupportPageState extends State<SupportPage> {
   }
 
   void getUserName() async {
-    userName = await FirebaseFunctions().getUserName(id: user!.uid);
+    userName = await FirebaseFunctions().getUserName(
+      id: FirebaseAuth.instance.currentUser!.uid,
+    );
   }
 
   String sendMessage() {
@@ -50,6 +51,7 @@ class _SupportPageState extends State<SupportPage> {
   @override
   Widget build(BuildContext context) {
     TextEditingController userMessage = TextEditingController();
+
     return Scaffold(
       floatingActionButton: answer == 5
           ? Padding(
@@ -59,7 +61,7 @@ class _SupportPageState extends State<SupportPage> {
                 sendMessage: () async {
                   if (userMessage.text.isNotEmpty) {
                     await FirebaseFunctions().sendMessage(
-                      id: user!.uid,
+                      id: FirebaseAuth.instance.currentUser!.uid,
                       message: userMessage.text,
                       sender: userName!,
                     );
@@ -177,9 +179,14 @@ class _SupportPageState extends State<SupportPage> {
               if (answer != 0 && answer != 5) botAnswer(answer: sendMessage()),
 
               const SizedBox(height: 30),
+
               if (answer == 5)
                 StreamBuilder(
-                  stream: FirebaseFunctions().getAllMessages(id: user!.uid),
+                  stream: FirebaseFunctions().getAllMessages(
+                    id: FirebaseAuth.instance.currentUser != null
+                        ? FirebaseAuth.instance.currentUser!.uid
+                        : 'empty',
+                  ),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return Center(child: CircularProgressIndicator());

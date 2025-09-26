@@ -17,13 +17,10 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  User? user = FirebaseAuth.instance.currentUser;
-
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
-
     return Scaffold(
       body: SizedBox.expand(
         child: Stack(
@@ -52,7 +49,9 @@ class _ProfilePageState extends State<ProfilePage> {
                   children: [
                     FutureBuilder(
                       future: FirebaseFunctions().getUser(
-                        id: user != null ? user!.uid : "empty",
+                        id: FirebaseAuth.instance.currentUser != null
+                            ? FirebaseAuth.instance.currentUser!.uid
+                            : "empty",
                       ),
                       builder: (context, snapshot) {
                         if (snapshot.connectionState ==
@@ -316,7 +315,12 @@ class _ProfilePageState extends State<ProfilePage> {
                                   onPressed: () {
                                     goTo(
                                       context: context,
-                                      page: ChangeName(userId: user!.uid),
+                                      page: ChangeName(
+                                        userId: FirebaseAuth
+                                            .instance
+                                            .currentUser!
+                                            .uid,
+                                      ),
                                     );
                                   },
                                   child: Text(
@@ -346,7 +350,10 @@ class _ProfilePageState extends State<ProfilePage> {
                                     goTo(
                                       context: context,
                                       page: ChangePasswordPage(
-                                        userId: user!.uid,
+                                        userId: FirebaseAuth
+                                            .instance
+                                            .currentUser!
+                                            .uid,
                                       ),
                                     );
                                   },
@@ -378,7 +385,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               ),
                               onPressed: () async {
                                 await FirebaseAuth.instance.signOut();
-                                user = FirebaseAuth.instance.currentUser;
+
                                 setState(() {});
                               },
                               child: Text(
@@ -393,9 +400,10 @@ class _ProfilePageState extends State<ProfilePage> {
                         );
                       },
                     ),
-                    if (user != null) const SizedBox(height: 150),
+                    if (FirebaseAuth.instance.currentUser != null)
+                      const SizedBox(height: 150),
                     // Policies
-                    if (user != null)
+                    if (FirebaseAuth.instance.currentUser != null)
                       Positioned(
                         top: height * 0.65,
                         left: width * 0.01,

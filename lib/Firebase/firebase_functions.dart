@@ -214,4 +214,9 @@ class FirebaseFunctions {
       "LastName": lastName,
     });
   }
+
+  Future<bool> checkIfUserBanned({required String userId}) async {
+    Map<String, dynamic>? userData = await getUser(id: userId);
+    return userData!['Active'];
+  }
 }

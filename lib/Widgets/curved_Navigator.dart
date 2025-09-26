@@ -1,3 +1,4 @@
+import 'package:electrocart/Firebase/firebase_functions.dart';
 import 'package:electrocart/Screens/cart_page.dart';
 import 'package:electrocart/Screens/discount_page.dart';
 import 'package:electrocart/Screens/home_page.dart';
@@ -33,8 +34,27 @@ class _CurvedNavigatorState extends State<CurvedNavigator> {
     SupportPage(),
   ];
 
+  void checkIfUserBanned() async {
+    if (await FirebaseFunctions().checkIfUserBanned(
+          userId: FirebaseAuth.instance.currentUser!.uid,
+        ) ==
+        false) {
+      FirebaseAuth.instance.signOut();
+      if (context.mounted) {
+        showSnackbar(
+          message: "You have been banned\nContact The Support",
+          context: context,
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    if (FirebaseAuth.instance.currentUser != null) {
+      checkIfUserBanned();
+    }
+
     final items = <Widget>[
       const Icon(Icons.person_outline, color: Colors.white, size: 32),
       const Icon(Icons.discount_outlined, color: Colors.white, size: 32),
@@ -55,7 +75,6 @@ class _CurvedNavigatorState extends State<CurvedNavigator> {
         items: items,
         index: _index,
         onTap: (index) {
-          //FirebaseAuth.instance.signOut();
           setState(() {
             if (index == 3) {
               final user = FirebaseAuth.instance.currentUser;

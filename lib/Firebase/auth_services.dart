@@ -67,6 +67,7 @@ class AuthServices {
         id: credential.user!.uid,
       );
       if (userData!['Active'] == false) {
+        FirebaseAuth.instance.signOut();
         throw FirebaseAuthException(code: "not-active");
       }
       if (credential.user!.emailVerified) {
@@ -83,7 +84,10 @@ class AuthServices {
       } else if (e.code == 'wrong-password') {
         showSnackbar(message: "Invalid Email or Password!", context: context);
       } else if (e.code == 'not-active') {
-        showSnackbar(message: "You have been banned!", context: context);
+        showSnackbar(
+          message: "You have been banned!\nContact The Support",
+          context: context,
+        );
       }
     }
   }
