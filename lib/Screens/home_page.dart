@@ -27,6 +27,7 @@ class HomePage extends StatelessWidget {
       },
     ];
     List<Map<String, dynamic>> products = [];
+    TextEditingController search = TextEditingController();
 
     double height = MediaQuery.of(context).size.height;
     // double width = MediaQuery.of(context).size.width;
@@ -68,7 +69,7 @@ class HomePage extends StatelessWidget {
                         child: SizedBox(
                           height: 50,
                           child: TextFormField(
-                            controller: TextEditingController(),
+                            controller: search,
                             decoration: InputDecoration(
                               hintText: "Search for product",
                               hintStyle: GoogleFonts.voces(
@@ -167,7 +168,7 @@ class HomePage extends StatelessWidget {
                   // Discounts
                   const SizedBox(height: 20),
                   Text(
-                    "Best Discounts",
+                    "All Products",
                     style: GoogleFonts.voces(
                       fontSize: 25,
                       fontWeight: FontWeight.bold,
