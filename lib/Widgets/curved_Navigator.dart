@@ -42,7 +42,8 @@ class _CurvedNavigatorState extends State<CurvedNavigator> {
       FirebaseAuth.instance.signOut();
       if (context.mounted) {
         showSnackbar(
-          message: "You have been banned\nContact The Support",
+          message:
+              "You have been banned\nContact The Support At\nElectroShopService@gmail.com",
           context: context,
         );
       }

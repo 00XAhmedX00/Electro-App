@@ -85,7 +85,9 @@ class AuthServices {
         showSnackbar(message: "Invalid Email or Password!", context: context);
       } else if (e.code == 'not-active') {
         showSnackbar(
-          message: "You have been banned!\nContact The Support",
+          message:
+              "You have been banned\nContact The Support At\nElectroShopService@gmail.com",
+
           context: context,
         );
       }
