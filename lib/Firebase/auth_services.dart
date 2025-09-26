@@ -87,7 +87,6 @@ class AuthServices {
         showSnackbar(
           message:
               "You have been banned\nContact The Support At\nElectroShopService@gmail.com",
-
           context: context,
         );
       }
