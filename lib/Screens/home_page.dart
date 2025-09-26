@@ -1,3 +1,4 @@
+import 'package:electrocart/Screens/category.dart';
 import 'package:electrocart/Screens/product_details.dart';
 import 'package:electrocart/Screens/whishlist.dart';
 import 'package:electrocart/Widgets/build_banner.dart';
@@ -15,12 +16,15 @@ class HomePage extends StatelessWidget {
   const HomePage({super.key});
   @override
   Widget build(BuildContext context) {
-    List<String> categoryImages = [
-      "assets/images/categories/iphone.png",
-      "assets/images/categories/laptop.png",
-      "assets/images/products/camera.png",
-      "assets/images/categories/tv.png",
-      "assets/images/categories/playstation.png",
+    List<Map<String, dynamic>> categoryImages = [
+      {'image': "assets/images/categories/iphone.png", 'category': "Phones"},
+      {'image': "assets/images/categories/laptop.png", 'category': "Laptops"},
+      {'image': "assets/images/products/camera.png", 'category': "Cameras"},
+      {'image': "assets/images/categories/tv.png", 'category': "TV"},
+      {
+        'image': "assets/images/categories/playstation.png",
+        'category': "Consoles",
+      },
     ];
     List<Map<String, dynamic>> products = [];
 
@@ -134,17 +138,26 @@ class HomePage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      ...categoryImages.map((image) {
-                        return Container(
-                          width: 60,
-                          height: 60,
-                          decoration: BoxDecoration(
-                            color: Colors.black12,
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: ClipRRect(
-                            borderRadius: BorderRadiusGeometry.circular(20),
-                            child: Image.asset(image),
+                      ...categoryImages.map((category) {
+                        return InkWell(
+                          onTap: () {
+                            goTo(
+                              context: context,
+                              page: Category(category: category['category']),
+                              routed: true,
+                            );
+                          },
+                          child: Container(
+                            width: 60,
+                            height: 60,
+                            decoration: BoxDecoration(
+                              color: Colors.black12,
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadiusGeometry.circular(20),
+                              child: Image.asset(category['image']),
+                            ),
                           ),
                         );
                       }),
