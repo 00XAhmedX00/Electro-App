@@ -8,6 +8,8 @@ class AddProduct extends ProductState {}
 
 class EditProduct extends ProductState {}
 
+class SearchProduct extends ProductState {}
+
 class GetProduct extends ProductState {
   final List<Map<String, dynamic>> products;
   GetProduct(this.products);

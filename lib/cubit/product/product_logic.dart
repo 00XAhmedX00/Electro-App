@@ -56,4 +56,23 @@ class ProductLogic extends Cubit<ProductState> {
 
     return discountedProducts;
   }
+
+  List<String> getSearchProducts({
+    required List<Map<String, dynamic>> products,
+    required String input,
+  }) {
+    print(products);
+
+    emit(SearchProduct());
+    return products
+        .map((product) {
+          if (product['name'].toString().contains(input)) {
+            print(product['name']);
+            return product['name'].toString();
+          }
+          return null;
+        })
+        .whereType<String>()
+        .toList();
+  }
 }

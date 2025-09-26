@@ -28,6 +28,7 @@ class HomePage extends StatelessWidget {
     ];
     List<Map<String, dynamic>> products = [];
     TextEditingController search = TextEditingController();
+    List<String> searchProducts = [];
 
     double height = MediaQuery.of(context).size.height;
     // double width = MediaQuery.of(context).size.width;
@@ -44,7 +45,7 @@ class HomePage extends StatelessWidget {
           // if(state is LoadingProduct){
           //   return const Center(child: CircularProgressIndicator(),);
           // }
-
+          ProductLogic productObj = BlocProvider.of(context);
           return SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.only(top: 50, left: 10, right: 10),
@@ -70,6 +71,12 @@ class HomePage extends StatelessWidget {
                           height: 50,
                           child: TextFormField(
                             controller: search,
+                            onChanged: (value) {
+                              searchProducts = productObj.getSearchProducts(
+                                products: products,
+                                input: value,
+                              );
+                            },
                             decoration: InputDecoration(
                               hintText: "Search for product",
                               hintStyle: GoogleFonts.voces(
@@ -87,6 +94,7 @@ class HomePage extends StatelessWidget {
                           ),
                         ),
                       ),
+
                       const SizedBox(width: 10),
                       // Favourite Icon
                       Container(
@@ -118,6 +126,28 @@ class HomePage extends StatelessWidget {
                       ),
                     ],
                   ),
+                  if (searchProducts.isNotEmpty)
+                    Container(
+                      color: Colors.black12,
+                      width: double.infinity,
+                      height: 100,
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            ...searchProducts.map((product) {
+                              return Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(product),
+                                  Divider(),
+                                  const SizedBox(height: 10),
+                                ],
+                              );
+                            }),
+                          ],
+                        ),
+                      ),
+                    ),
                   const SizedBox(height: 20),
                   // Sliding Show
                   SizedBox(
