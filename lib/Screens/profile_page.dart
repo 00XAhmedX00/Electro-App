@@ -1,4 +1,5 @@
 import 'package:electrocart/Firebase/firebase_functions.dart';
+import 'package:electrocart/Screens/change_name_page.dart';
 import 'package:electrocart/Screens/login_page.dart';
 import 'package:electrocart/Screens/registration_page.dart';
 import 'package:electrocart/Widgets/display_buttom_container.dart';
@@ -311,7 +312,12 @@ class _ProfilePageState extends State<ProfilePage> {
                                       width: 2,
                                     ),
                                   ),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    goTo(
+                                      context: context,
+                                      page: ChangeName(userId: user!.uid),
+                                    );
+                                  },
                                   child: Text(
                                     "Change Name",
                                     style: GoogleFonts.voces(

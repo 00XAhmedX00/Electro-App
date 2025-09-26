@@ -203,4 +203,15 @@ class FirebaseFunctions {
       "rate": rate,
     });
   }
+
+  Future updateName({
+    required String firstName,
+    required String lastName,
+    required String id,
+  }) async {
+    await firestore.collection("Users").doc(id).update({
+      "FirstName": firstName,
+      "LastName": lastName,
+    });
+  }
 }

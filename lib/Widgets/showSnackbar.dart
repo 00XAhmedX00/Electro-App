@@ -13,7 +13,7 @@ void showSnackbar({required String message, required context}) {
           fontWeight: FontWeight.w400,
         ),
       ),
-      duration: Duration(seconds: 1),
+      duration: Duration(seconds: 3),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadiusGeometry.only(
           topLeft: Radius.circular(20),
