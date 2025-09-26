@@ -27,7 +27,7 @@ class _ProfilePageState extends State<ProfilePage> {
           children: [
             Container(
               width: double.infinity,
-              height: height * 0.4,
+              height: height * 0.46,
               decoration: const BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topRight,
