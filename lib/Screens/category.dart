@@ -1,3 +1,5 @@
+import 'package:electrocart/Widgets/showSnackbar.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -64,11 +66,18 @@ class Category extends StatelessWidget {
                       final product = products[index];
                       return GestureDetector(
                         onTap: () {
-                          goTo(
-                            context: context,
-                            page: ProductDetails(product: product),
-                            routed: true,
-                          );
+                          if (FirebaseAuth.instance.currentUser != null) {
+                            goTo(
+                              context: context,
+                              page: ProductDetails(product: product),
+                              routed: true,
+                            );
+                          } else {
+                            showSnackbar(
+                              message: "You Must Login",
+                              context: context,
+                            );
+                          }
                         },
                         child: Card(
                           shape: RoundedRectangleBorder(

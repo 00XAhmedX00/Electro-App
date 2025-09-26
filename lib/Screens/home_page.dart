@@ -99,11 +99,18 @@ class HomePage extends StatelessWidget {
                         child: Center(
                           child: IconButton(
                             onPressed: () {
-                              goTo(
-                                context: context,
-                                page: Whishlist(),
-                                routed: true,
-                              );
+                              if (FirebaseAuth.instance.currentUser != null) {
+                                goTo(
+                                  context: context,
+                                  page: Whishlist(),
+                                  routed: true,
+                                );
+                              } else {
+                                showSnackbar(
+                                  message: "You Must Login",
+                                  context: context,
+                                );
+                              }
                             },
                             icon: Icon(Icons.favorite_border_outlined),
                           ),
