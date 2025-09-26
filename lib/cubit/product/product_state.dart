@@ -14,5 +14,10 @@ class GetProduct extends ProductState {
 
 }
 
+class GetDiscountProducts extends ProductState{
+  final List<Map<String, dynamic>> discountedProducts;
+  GetDiscountProducts(this.discountedProducts);
+}
+
 class DeleteProduct extends ProductState {}
 

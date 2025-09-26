@@ -24,17 +24,6 @@ class CartPage extends StatelessWidget {
           }
           if (state is GetCartItems) {
             cartProducts = state.cartItems;
-            if (cartProducts.isEmpty) {
-              return Center(
-                child: Text(
-                  'Cart Is Empty',
-                  style: GoogleFonts.voces(
-                    fontSize: 35,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              );
-            }
           }
 
           //  Calculate total price
@@ -60,100 +49,120 @@ class CartPage extends StatelessWidget {
                     ),
                   ),
                   Expanded(
-                    child: ListView.builder(
-                      itemCount: cartProducts.length,
-                      itemBuilder: (context, index) {
-                        return ProductCart(
-                          product: cartProducts[index],
-                          onDelete: () async {
-                            await cartObj.deleteCartItem(
-                              cartProducts[index]['docId'],
-                            );
-                          },
-                          onAdd: ()async {await cartObj.increaseCartItem(cartProducts[index]['docId']);},
-                          onRemove: () async{ await cartObj.decreaseCartItem(cartProducts[index]['docId']);},
-                        );
-                      },
-                    ),
-                  ),
-
-                  
-                  //  Total Price Box + Checkout Button
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 20,
-                      horizontal: 25,
-                    ),
-                    decoration: const BoxDecoration(
-                      color: Color(0xFF9C27B0), // purple theme
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(20),
-                        topRight: Radius.circular(20),
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black26,
-                          blurRadius: 8,
-                          offset: Offset(0, -2),
-                        ),
-                      ],
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        // Total Price
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Total:',
+                    child: cartProducts.isEmpty
+                        ? Center(
+                            child: Text(
+                              'Cart Is Empty',
                               style: GoogleFonts.voces(
-                                color: Colors.white70,
-                                fontSize: 18,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                            Text(
-                              "\$${totalPrice.toStringAsFixed(2)}",
-                              style: GoogleFonts.voces(
-                                color: Colors.white,
-                                fontSize: 24,
+                                fontSize: 35,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                          ],
-                        ),
-
-                        // Checkout Button
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white,
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 30,
-                              vertical: 15,
-                            ),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            elevation: 4,
+                          )
+                        : ListView.builder(
+                            itemCount: cartProducts.length,
+                            itemBuilder: (context, index) {
+                              return ProductCart(
+                                product: cartProducts[index],
+                                onDelete: () async {
+                                  await cartObj.deleteCartItem(
+                                    cartProducts[index]['docId'],
+                                  );
+                                },
+                                onAdd: () async {
+                                  await cartObj.increaseCartItem(
+                                    cartProducts[index]['docId'],
+                                  );
+                                },
+                                onRemove: () async {
+                                  await cartObj.decreaseCartItem(
+                                    cartProducts[index]['docId'],
+                                  );
+                                },
+                              );
+                            },
                           ),
-                          onPressed: () {
-                            
-                            showSnackbar(message: 'Procedding To checkout', context: context);
-                            
-                          },
-                          child: Text(
-                            "Checkout",
-                            style: GoogleFonts.voces(
-                              color: Color(0xFF9C27B0), // match theme
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
                   ),
+
+                  //  Total Price Box + Checkout Button
+                  cartProducts.isEmpty
+                      ? SizedBox()
+                      : Container(
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 20,
+                            horizontal: 25,
+                          ),
+                          decoration: const BoxDecoration(
+                            color: Color(0xFF9C27B0), // purple theme
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(20),
+                              topRight: Radius.circular(20),
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black26,
+                                blurRadius: 8,
+                                offset: Offset(0, -2),
+                              ),
+                            ],
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              // Total Price
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Total:',
+                                    style: GoogleFonts.voces(
+                                      color: Colors.white70,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                  Text(
+                                    "\$${totalPrice.toStringAsFixed(2)}",
+                                    style: GoogleFonts.voces(
+                                      color: Colors.white,
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+
+                              // Checkout Button
+                              ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.white,
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 30,
+                                    vertical: 15,
+                                  ),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  elevation: 4,
+                                ),
+                                onPressed: () {
+                                  showSnackbar(
+                                    message: 'Procedding To checkout',
+                                    context: context,
+                                  );
+                                },
+                                child: Text(
+                                  "Checkout",
+                                  style: GoogleFonts.voces(
+                                    color: Color(0xFF9C27B0), // match theme
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                 ],
               ),
             ),

@@ -18,7 +18,7 @@ class HomePage extends StatelessWidget {
     List<String> categoryImages = [
       "assets/images/categories/iphone.png",
       "assets/images/categories/laptop.png",
-      "assets/images/categories/pc.png",
+      "assets/images/products/camera.png",
       "assets/images/categories/tv.png",
       "assets/images/categories/playstation.png",
     ];

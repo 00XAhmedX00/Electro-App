@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:electrocart/cubit/product/product_state.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:bloc/bloc.dart';
 
 class ProductLogic extends Cubit<ProductState> {
@@ -25,6 +24,34 @@ class ProductLogic extends Cubit<ProductState> {
 
     return products;
   }
+
+Future<List<Map<String, dynamic>>> getDiscountedProducts() async {
+  List<Map<String, dynamic>> discountedProducts = [];
+  emit(LoadingProduct());
+
+  try {
+    final snapshot = await productObj.get();
+
+    discountedProducts = snapshot.docs.map((doc) {
+      final data = doc.data() as Map<String, dynamic>;
+      return {
+        'id': doc.id,
+        ...data,
+      };
+    }).where((product) {
+      // Check if discount exists
+      final price = (product['price'] ?? 0).toDouble();
+      final priceAfter = (product['priceAfterDiscount'] ?? price).toDouble();
+      return priceAfter < price;
+    }).toList();
+
+    emit(GetDiscountProducts(discountedProducts));
+  } catch (err) {
+    print('Error: $err');
+  }
+
+  return discountedProducts;
+}
 
 
 
