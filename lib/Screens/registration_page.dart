@@ -1,5 +1,6 @@
 import 'package:electrocart/Firebase/auth_services.dart';
 import 'package:electrocart/Screens/login_page.dart';
+import 'package:electrocart/Widgets/curved_Navigator.dart';
 import 'package:electrocart/Widgets/go_to.dart';
 import 'package:electrocart/Widgets/specific_form_field.dart';
 import 'package:flutter/material.dart';
@@ -139,6 +140,19 @@ class _RegistrationPageState extends State<RegistrationPage> {
                 child: Center(
                   child: Text(
                     "Already Login?",
+                    style: GoogleFonts.voces(fontSize: 20, color: Colors.white),
+                  ),
+                ),
+              ),
+              // Guest Go To Home Page Button
+              const SizedBox(height: 5),
+              GestureDetector(
+                onTap: () {
+                  goTo(context: context, page: CurvedNavigator());
+                },
+                child: Center(
+                  child: Text(
+                    "Log as Guest?",
                     style: GoogleFonts.voces(fontSize: 20, color: Colors.white),
                   ),
                 ),

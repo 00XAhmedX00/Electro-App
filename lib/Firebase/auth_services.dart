@@ -63,10 +63,10 @@ class AuthServices {
           .catchError((err) {
             throw FirebaseAuthException(code: 'user-not-found');
           });
-      Map<String, dynamic> userData = await FirebaseFunctions().getUser(
+      Map<String, dynamic>? userData = await FirebaseFunctions().getUser(
         id: credential.user!.uid,
       );
-      if (userData['Active'] == false) {
+      if (userData!['Active'] == false) {
         throw FirebaseAuthException(code: "not-active");
       }
       if (credential.user!.emailVerified) {

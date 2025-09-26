@@ -23,19 +23,21 @@ class FirebaseFunctions {
     }).toList();
   }
 
-  Future<Map<String, dynamic>> getUser({required String id}) async {
+  Future<Map<String, dynamic>?> getUser({required String id}) async {
     DocumentSnapshot snapshot = await firestore
         .collection("Users")
         .doc(id)
         .get();
 
+    if (!snapshot.exists) return null;
+
     return snapshot.data() as Map<String, dynamic>;
   }
 
   Future<String?> getUserName({required String id}) async {
-    final Map<String, dynamic> userData = await getUser(id: id);
+    final Map<String, dynamic>? userData = await getUser(id: id);
 
-    if (userData['FirstName'] != null && userData['LastName'] != null) {
+    if (userData!['FirstName'] != null && userData['LastName'] != null) {
       return "${userData['FirstName']} ${userData['LastName']}";
     }
 
@@ -55,7 +57,10 @@ class FirebaseFunctions {
     List<Map<String, dynamic>> users = [];
 
     for (int i = 0; i < chatIds.length; i++) {
-      users.add(await getUser(id: chatIds[i]));
+      final user = await getUser(id: chatIds[i]);
+      if (user != null) {
+        users.add(user);
+      }
     }
 
     return users;
