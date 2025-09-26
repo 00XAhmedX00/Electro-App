@@ -12,3 +12,10 @@ class GetItems extends WishlistState {
   final List<Map<String,dynamic>> items;
   GetItems(this.items);
 }
+
+
+class WishlistCheck extends WishlistState {
+  final bool exists;
+  WishlistCheck(this.exists);
+}
+

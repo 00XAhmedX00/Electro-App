@@ -147,8 +147,10 @@ class Whishlist extends StatelessWidget {
                                     ),
                                     const SizedBox(height: 8),
                                     ElevatedButton(
-                                      onPressed: () async{
-                                        await wishobj.removeItem(product['docId']);
+                                      onPressed: () async {
+                                        await wishobj.removeItem(
+                                          product['docId'],
+                                        );
                                       },
                                       style: ElevatedButton.styleFrom(
                                         backgroundColor: Colors.red,
@@ -184,111 +186,3 @@ class Whishlist extends StatelessWidget {
 }
 
 
-/*
-
-Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.white,
-        title: Text(
-          'Wishlist',
-          style: GoogleFonts.voces(
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        centerTitle: true,
-      ),
-      body: SafeArea(
-        child: wishlistItems.isEmpty
-            ? Center(
-                child: Text(
-                  "Your Wishlist is Empty",
-                  style: GoogleFonts.voces(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black54,
-                  ),
-                ),
-              )
-            : ListView.builder(
-                padding: const EdgeInsets.all(15),
-                itemCount: wishlistItems.length,
-                itemBuilder: (context, index) {
-                  final product = wishlistItems[index];
-                  return Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    elevation: 3,
-                    margin: const EdgeInsets.symmetric(vertical: 10),
-                    child: Padding(
-                      padding: const EdgeInsets.all(12),
-                      child: Row(
-                        children: [
-                          // Product Image
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(15),
-                            child: Image.asset(
-                              product["image"],
-                              height: 80,
-                              width: 80,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                          const SizedBox(width: 15),
-
-                          // Product Info
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  product["name"],
-                                  style: GoogleFonts.voces(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                const SizedBox(height: 5),
-                                Text(
-                                  product["category"],
-                                  style: GoogleFonts.voces(
-                                    fontSize: 14,
-                                    color: Colors.black54,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-
-                          // Go to Details Button
-                          ElevatedButton(
-                            onPressed: () {
-                              goTo(context: context, page: ProductDetails(product: product));
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFF9C27B0),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 15,
-                                vertical: 10,
-                              ),
-                            ),
-                            child: const Text(
-                              "Details",
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              ),
-      ),
-    );
-
-*/ 

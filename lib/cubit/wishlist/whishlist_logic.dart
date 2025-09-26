@@ -15,8 +15,7 @@ class WhishlistLogic extends Cubit<WishlistState> {
 
   final user = FirebaseAuth.instance.currentUser!.uid;
 
-
- void showSuccessfulDialog({
+  void showSuccessfulDialog({
     required BuildContext context,
     required String message,
   }) {
@@ -81,7 +80,7 @@ class WhishlistLogic extends Cubit<WishlistState> {
                       ),
                       onPressed: () {
                         Navigator.of(ctx).pop();
-                        goTo(context: context, page: Whishlist() , routed: true);
+                        goTo(context: context, page: Whishlist(), routed: true);
                       },
                       child: const Text("Go to WishList"),
                     ),
@@ -95,68 +94,88 @@ class WhishlistLogic extends Cubit<WishlistState> {
     );
   }
 
-
-
   Future<List<Map<String, dynamic>>> getAllItems() async {
-  List<Map<String, dynamic>> items = [];
-  emit(LoadingWish());
+    List<Map<String, dynamic>> items = [];
+    emit(LoadingWish());
 
-  try {
-    final snapshot = await wishlistObj
-        .doc(user)
-        .collection('items')
-        .get();
+    try {
+      final snapshot = await wishlistObj.doc(user).collection('items').get();
 
-    items = snapshot.docs.map((doc) {
-      final data = doc.data();
-      return {
-        ...data,        // keep all fields
-        'docId': doc.id // add document id
-      };
-    }).toList();
+      items = snapshot.docs.map((doc) {
+        final data = doc.data();
+        return {
+          ...data, // keep all fields
+          'docId': doc.id, // add document id
+        };
+      }).toList();
 
-    emit(GetItems(items));
-  } catch (err) {
-    print('Error: $err');
+      emit(GetItems(items));
+    } catch (err) {
+      print('Error: $err');
+    }
+
+    return items;
   }
 
-  return items;
-}
-
-
-  Future<void> addItem(Map<String, dynamic> product , BuildContext context) async {
-    
+  Future<void> addItem(
+    Map<String, dynamic> product,
+    BuildContext context,
+  ) async {
     await wishlistObj
         .doc(user)
         .collection('items')
         .add({
           'id': product['id'],
-          'image' : product['image'],
+          'image': product['image'],
           'name': product['name'],
           'price': product['price'],
           'priceAfterDiscount': product['priceAfterDiscount'],
           'category': product['category'] ?? 'Empty',
           'description': product['description'] ?? 'Empty',
-          'rate' : product['rate']
+          'rate': product['rate'],
         })
         .then((val) async {
           emit(AddItem());
-          showSuccessfulDialog(context: context, message: 'Product Added Successfuly to WishList');
+          showSuccessfulDialog(
+            context: context,
+            message: 'Product Added Successfuly to WishList',
+          );
         })
         .catchError((err) => print('ERROR : $err'));
   }
 
   Future<void> removeItem(String docId) async {
     try {
-      await wishlistObj
-          .doc(user)
-          .collection('items')
-          .doc(docId)
-          .delete();
-      emit(RemoveItem()); 
+      await wishlistObj.doc(user).collection('items').doc(docId).delete();
+      emit(RemoveItem());
       await getAllItems(); // refresh
     } catch (e) {
       print('Error removing item: $e');
     }
-}
+  }
+
+  Future<void> isInWishlist(String productId) async {
+    emit(LoadingWish());
+
+    final snapshot = await wishlistObj
+        .doc(user)
+        .collection('items')
+        .where('id', isEqualTo: productId)
+        .get();
+
+    bool exists = snapshot.docs.isNotEmpty;
+    emit(WishlistCheck(exists));
+  }
+
+  Future<void> removeItemByField(String productId) async {
+    final snapshot = await wishlistObj
+        .doc(user)
+        .collection('items')
+        .where('id', isEqualTo: productId) // match field
+        .get();
+
+    for (var doc in snapshot.docs) {
+      await doc.reference.delete().then((val) async => await isInWishlist(productId) ); // delete each matching doc
+    }
+  }
 }

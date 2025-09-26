@@ -1,6 +1,7 @@
 import 'package:electrocart/cubit/cart/cart_logic.dart';
 import 'package:electrocart/cubit/cart/cart_state.dart';
 import 'package:electrocart/cubit/wishlist/whishlist_logic.dart';
+import 'package:electrocart/cubit/wishlist/wishlist_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -13,9 +14,11 @@ class ProductDetails extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<CartLogic>(create: (context) => CartLogic()),
-        BlocProvider<WhishlistLogic>(create: (context) => WhishlistLogic()),
+        BlocProvider<WhishlistLogic>(
+          create: (context) => WhishlistLogic()..isInWishlist(product['id']),
+        ),
       ],
-     
+
       child: BlocConsumer<CartLogic, CartState>(
         listener: (context, state) {},
         builder: (context, state) {
@@ -27,19 +30,32 @@ class ProductDetails extends StatelessWidget {
               backgroundColor: Colors.white,
               elevation: 0,
               centerTitle: true,
-              title: Text(
-                product["name"],
-                style: const TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+              title: Text(product["name"]),
               actions: [
-                IconButton(onPressed: () async{
-                  await wishObj.addItem(product , context);
-                }, icon: Icon(Icons.favorite_border_outlined , size: 30,))
+                BlocBuilder<WhishlistLogic, WishlistState>(
+                  builder: (context, state) {
+                    if (state is WishlistCheck) {
+                      return IconButton(
+                        icon: Icon(
+                          state.exists
+                              ? Icons.favorite
+                              : Icons.favorite_border_outlined,
+                          color: state.exists ? Colors.red : Colors.black,
+                          size: 30,
+                        ),
+                        onPressed: () async {
+                          if (state.exists) {
+                            await wishObj.removeItemByField(product['id']);
+                          } else {
+                            await wishObj.addItem(product, context);
+                          }
+                        },
+                      );
+                    }
+                    return const SizedBox(); // fallback
+                  },
+                ),
               ],
-              iconTheme: const IconThemeData(color: Colors.black),
             ),
             body: SingleChildScrollView(
               child: Column(
