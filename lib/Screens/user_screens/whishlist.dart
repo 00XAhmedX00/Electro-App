@@ -1,4 +1,4 @@
-import 'package:electrocart/Screens/product_details.dart';
+import 'package:electrocart/Screens/user_screens/product_details.dart';
 import 'package:electrocart/Widgets/go_to.dart';
 import 'package:electrocart/cubit/wishlist/whishlist_logic.dart';
 import 'package:electrocart/cubit/wishlist/wishlist_state.dart';
@@ -184,5 +184,3 @@ class Whishlist extends StatelessWidget {
     );
   }
 }
-
-

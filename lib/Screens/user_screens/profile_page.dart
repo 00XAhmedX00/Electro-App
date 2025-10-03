@@ -1,6 +1,6 @@
 import 'package:electrocart/Firebase/firebase_functions.dart';
-import 'package:electrocart/Screens/change_name_page.dart';
-import 'package:electrocart/Screens/change_password_page.dart';
+import 'package:electrocart/Screens/user_screens/change_name_page.dart';
+import 'package:electrocart/Screens/user_screens/change_password_page.dart';
 import 'package:electrocart/Screens/login_page.dart';
 import 'package:electrocart/Screens/registration_page.dart';
 import 'package:electrocart/Widgets/display_buttom_container.dart';

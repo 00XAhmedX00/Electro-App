@@ -151,38 +151,109 @@ class SpecificFormField {
     required TextEditingController controller,
     required Function sendMessage,
   }) {
-    return SizedBox(
-      width: double.maxFinite,
-      child: TextFormField(
-        controller: controller,
-        decoration: InputDecoration(
-          hintText: "Enter a Message...",
-          hintStyle: GoogleFonts.voces(fontSize: 15, color: Colors.black38),
-          prefixIcon: Icon(Icons.message_outlined),
-          suffixIcon: IconButton(
-            onPressed: () {
-              sendMessage();
-            },
-            icon: Icon(Icons.send_outlined),
+    return StatefulBuilder(
+      builder: (context, setState) {
+        return Container(
+          width: double.maxFinite,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(25),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.2),
+                blurRadius: 10,
+                offset: Offset(0, 2),
+              ),
+            ],
+            border: Border.all(color: Colors.purple.withOpacity(0.3), width: 1),
           ),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide(color: Colors.black),
+          child: Row(
+            children: [
+              // Message input field
+              Expanded(
+                child: TextFormField(
+                  controller: controller,
+                  maxLines: null,
+                  textInputAction: TextInputAction.newline,
+                  decoration: InputDecoration(
+                    hintText: "Type your message...",
+                    hintStyle: GoogleFonts.poppins(
+                      fontSize: 14,
+                      color: Colors.grey[500],
+                      fontWeight: FontWeight.w400,
+                    ),
+                    border: InputBorder.none,
+                    enabledBorder: InputBorder.none,
+                    focusedBorder: InputBorder.none,
+                    contentPadding: EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 16,
+                    ),
+                  ),
+                  style: GoogleFonts.poppins(
+                    fontSize: 14,
+                    color: Colors.black87,
+                    fontWeight: FontWeight.w400,
+                  ),
+                  onChanged: (value) {
+                    setState(() {}); // Rebuild to update send button state
+                  },
+                  onFieldSubmitted: (value) {
+                    if (controller.text.trim().isNotEmpty) {
+                      sendMessage();
+                    }
+                  },
+                ),
+              ),
+
+              // Send button
+              Container(
+                margin: EdgeInsets.only(right: 8),
+                child: Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    onTap: () {
+                      if (controller.text.trim().isNotEmpty) {
+                        sendMessage();
+                      }
+                    },
+                    borderRadius: BorderRadius.circular(20),
+                    child: AnimatedContainer(
+                      duration: Duration(milliseconds: 200),
+                      width: 40,
+                      height: 40,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: controller.text.trim().isNotEmpty
+                              ? [Colors.purple.shade600, Colors.purple.shade800]
+                              : [Colors.grey.shade300, Colors.grey.shade400],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: controller.text.trim().isNotEmpty
+                            ? [
+                                BoxShadow(
+                                  color: Colors.purple.withOpacity(0.3),
+                                  blurRadius: 8,
+                                  offset: Offset(0, 2),
+                                ),
+                              ]
+                            : null,
+                      ),
+                      child: Icon(
+                        Icons.send_rounded,
+                        color: Colors.white,
+                        size: 20,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide(color: Colors.purple, width: 3),
-          ),
-          filled: true,
-          fillColor: Colors.purple.shade100,
-        ),
-        validator: (value) {
-          if (value!.isEmpty) {
-            return "Enter a Message!";
-          }
-          return null;
-        },
-      ),
+        );
+      },
     );
   }
 
@@ -284,7 +355,7 @@ class SpecificFormField {
         inputFormatters: [FilteringTextInputFormatter.digitsOnly],
         validator: (value) {
           if (value!.isEmpty ||
-              int.parse(value!) > 100 ||
+              int.parse(value) > 100 ||
               int.parse(value) < 0) {
             return "Discount should be between 0 and 100";
           }

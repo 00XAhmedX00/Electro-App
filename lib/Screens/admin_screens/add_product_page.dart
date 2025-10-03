@@ -18,18 +18,28 @@ class AddProductPage extends StatelessWidget {
 
     GlobalKey<FormState> key = GlobalKey<FormState>();
     return Scaffold(
+      backgroundColor: Colors.grey[50],
       appBar: AppBar(
-        backgroundColor: Colors.green.shade300,
-        title: Text("Add Product"),
-      ),
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            fixedSize: Size(double.maxFinite, 50),
-            backgroundColor: Colors.green.shade300,
-            side: BorderSide(color: Colors.green, width: 3),
+        elevation: 0,
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.black87,
+        title: Text(
+          'Add New Product',
+          style: GoogleFonts.poppins(
+            fontSize: 20,
+            fontWeight: FontWeight.w600,
+            color: Colors.black87,
           ),
+        ),
+        centerTitle: true,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios, color: Colors.black87),
+          onPressed: () => Navigator.pop(context),
+        ),
+      ),
+      floatingActionButton: Container(
+        margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        child: ElevatedButton.icon(
           onPressed: () async {
             if (key.currentState!.validate() && category.text.isNotEmpty) {
               await FirebaseFunctions().saveProduct(
@@ -41,81 +51,200 @@ class AddProductPage extends StatelessWidget {
                 price: double.parse(price.text),
               );
               if (context.mounted) {
-                showSnackbar(message: "Product Saved", context: context);
+                showSnackbar(
+                  message: "Product Saved Successfully!",
+                  context: context,
+                );
                 Navigator.of(context).pop();
               }
             } else {
-              showSnackbar(message: "Fill All Fields", context: context);
+              showSnackbar(
+                message: "Please fill all required fields",
+                context: context,
+              );
             }
           },
-          child: Text(
-            "Save Product",
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.green.shade600,
+            foregroundColor: Colors.white,
+            padding: EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            elevation: 2,
+          ),
+          icon: Icon(Icons.save, size: 20),
+          label: Text(
+            'Save Product',
             style: GoogleFonts.poppins(
-              fontSize: 26,
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
             ),
           ),
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      body: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: Form(
-          key: key,
-          child: SingleChildScrollView(
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: EdgeInsets.all(16),
+          child: Form(
+            key: key,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Product Name
-                Text("Name", style: GoogleFonts.voces(fontSize: 30)),
-                const SizedBox(height: 5),
-                SpecificFormField().productNameFormField(
-                  controller: name,
-                  hintText: "Product Name",
+                // Header Section
+                Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [Colors.green.shade600, Colors.green.shade800],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                    borderRadius: BorderRadius.circular(16),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.green.withOpacity(0.3),
+                        blurRadius: 10,
+                        offset: Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    children: [
+                      Container(
+                        padding: EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.2),
+                          borderRadius: BorderRadius.circular(50),
+                        ),
+                        child: Icon(
+                          Icons.add_box,
+                          size: 32,
+                          color: Colors.white,
+                        ),
+                      ),
+                      SizedBox(height: 12),
+                      Text(
+                        'Add New Product',
+                        style: GoogleFonts.poppins(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                      SizedBox(height: 4),
+                      Text(
+                        'Fill in the product details below',
+                        style: GoogleFonts.poppins(
+                          fontSize: 14,
+                          color: Colors.white.withOpacity(0.9),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-                // Product Description
-                const SizedBox(height: 20),
-                Text("Description", style: GoogleFonts.voces(fontSize: 30)),
-                const SizedBox(height: 5),
-                SpecificFormField().productNameFormField(
-                  controller: description,
-                  hintText: "Product Description",
+
+                SizedBox(height: 24),
+
+                // Form Fields
+                _buildFormSection(
+                  title: 'Product Name',
+                  icon: Icons.shopping_bag_outlined,
+                  child: SpecificFormField().productNameFormField(
+                    controller: name,
+                    hintText: "Enter product name",
+                  ),
                 ),
-                // Product Price
-                const SizedBox(height: 20),
-                Text("Price", style: GoogleFonts.voces(fontSize: 30)),
-                const SizedBox(height: 5),
-                SpecificFormField().productPriceFormField(
-                  controller: price,
-                  hintText: "Product Price",
+
+                _buildFormSection(
+                  title: 'Description',
+                  icon: Icons.description_outlined,
+                  child: SpecificFormField().productNameFormField(
+                    controller: description,
+                    hintText: "Enter product description",
+                  ),
                 ),
-                // Product Discount if it has
-                const SizedBox(height: 20),
-                Text("Discount Rate", style: GoogleFonts.voces(fontSize: 30)),
-                const SizedBox(height: 5),
-                SpecificFormField().productDiscountFormField(
-                  controller: discount,
-                  hintText: "Product Discount (If There Is)",
+
+                _buildFormSection(
+                  title: 'Price',
+                  icon: Icons.attach_money_outlined,
+                  child: SpecificFormField().productPriceFormField(
+                    controller: price,
+                    hintText: "Enter product price",
+                  ),
                 ),
-                // Product Category
-                const SizedBox(height: 20),
-                Text("Category", style: GoogleFonts.voces(fontSize: 30)),
-                const SizedBox(height: 5),
-                SpecificFormField().categoryDropDownList(controller: category),
-                // Image Link
-                const SizedBox(height: 20),
-                Text("Image Link", style: GoogleFonts.voces(fontSize: 30)),
-                const SizedBox(height: 5),
-                SpecificFormField().productNameFormField(
-                  controller: imageUrl,
-                  hintText: "Product Image Link",
+
+                _buildFormSection(
+                  title: 'Discount Rate (%)',
+                  icon: Icons.discount_outlined,
+                  child: SpecificFormField().productDiscountFormField(
+                    controller: discount,
+                    hintText: "Enter discount percentage",
+                  ),
                 ),
+
+                _buildFormSection(
+                  title: 'Category',
+                  icon: Icons.category_outlined,
+                  child: SpecificFormField().categoryDropDownList(
+                    controller: category,
+                  ),
+                ),
+
+                _buildFormSection(
+                  title: 'Image URL',
+                  icon: Icons.image_outlined,
+                  child: SpecificFormField().productNameFormField(
+                    controller: imageUrl,
+                    hintText: "Enter product image URL",
+                  ),
+                ),
+
+                SizedBox(height: 100), // Space for floating action button
               ],
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildFormSection({
+    required String title,
+    required IconData icon,
+    required Widget child,
+  }) {
+    return Container(
+      margin: EdgeInsets.only(bottom: 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                padding: EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: Colors.green.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Icon(icon, color: Colors.green, size: 20),
+              ),
+              SizedBox(width: 12),
+              Text(
+                title,
+                style: GoogleFonts.poppins(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black87,
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 12),
+          child,
+        ],
       ),
     );
   }

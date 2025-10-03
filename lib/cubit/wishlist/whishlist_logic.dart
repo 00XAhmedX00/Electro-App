@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:electrocart/Screens/whishlist.dart';
+import 'package:electrocart/Screens/user_screens/whishlist.dart';
 import 'package:electrocart/Widgets/go_to.dart';
 import 'package:electrocart/cubit/wishlist/wishlist_state.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -175,7 +175,9 @@ class WhishlistLogic extends Cubit<WishlistState> {
         .get();
 
     for (var doc in snapshot.docs) {
-      await doc.reference.delete().then((val) async => await isInWishlist(productId) ); // delete each matching doc
+      await doc.reference.delete().then(
+        (val) async => await isInWishlist(productId),
+      ); // delete each matching doc
     }
   }
 }

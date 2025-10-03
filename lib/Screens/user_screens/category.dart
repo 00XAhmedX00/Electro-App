@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:electrocart/cubit/product/product_state.dart';
 import 'package:electrocart/cubit/product/product_logic.dart';
-import 'package:electrocart/Screens/product_details.dart';
+import 'package:electrocart/Screens/user_screens/product_details.dart';
 import 'package:electrocart/Widgets/go_to.dart';
 
 class Category extends StatelessWidget {

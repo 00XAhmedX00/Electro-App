@@ -1,9 +1,9 @@
 import 'package:electrocart/Firebase/firebase_functions.dart';
-import 'package:electrocart/Screens/cart_page.dart';
-import 'package:electrocart/Screens/discount_page.dart';
-import 'package:electrocart/Screens/home_page.dart';
-import 'package:electrocart/Screens/profile_page.dart';
-import 'package:electrocart/Screens/support_page.dart';
+import 'package:electrocart/Screens/user_screens/cart_page.dart';
+import 'package:electrocart/Screens/user_screens/discount_page.dart';
+import 'package:electrocart/Screens/user_screens/home_page.dart';
+import 'package:electrocart/Screens/user_screens/profile_page.dart';
+import 'package:electrocart/Screens/user_screens/support_page.dart';
 import 'package:electrocart/Widgets/showSnackbar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';

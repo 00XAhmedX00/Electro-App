@@ -1,4 +1,4 @@
-import 'package:electrocart/Screens/product_details.dart';
+import 'package:electrocart/Screens/user_screens/product_details.dart';
 import 'package:electrocart/Widgets/go_to.dart';
 import 'package:electrocart/Widgets/showSnackbar.dart';
 import 'package:electrocart/cubit/product/product_logic.dart';
